@@ -1,18 +1,19 @@
-import { makeWASocket, makeMongoStore } from '@iamrony777/baileys'
+import { makeWASocket, makeMongoStore, DisconnectReason } from '@iamrony777/baileys'
+import { Boom } from '@hapi/boom'
 import Utils from '../utils/Util.js'
 import { createLogger } from '../utils/Logger.js'
 import DatabaseHandler from '../handler/Database.js'
 import Message from '../decorators/DefineMesssage.js'
 import MessageHandler from '../handler/Message.js'
 export default class Devi {
-    constructor(config, mongo, saveCreds, options) {
+    constructor(config, mongo, authSession, options) {
         this.log = createLogger()
         this.databaseHandler = DatabaseHandler
         this.message = Message
         this.MessageHandler = MessageHandler
         this.config = config
         this.mongo = mongo
-        this.saveCreds = saveCreds
+        this.authSession = authSession
         this.options = options
     }
 
@@ -26,9 +27,17 @@ export default class Devi {
         const DB = new this.databaseHandler(this.config, this.log)
         await DB.connect()
         socket.ev.on('connection.update', async (update) => {
-            const { connection, qr } = update
+            const { connection, lastDisconnect, qr } = update
+            const { statusCode } = new Boom(lastDisconnect?.error).output
             if (qr) this.log.notice('Qr has been generated!!')
-            if (connection === 'close') setTimeout(() => this.connect(), 3000)
+            if (connection === 'close') {
+                if (statusCode !== DisconnectReason.loggedOut) setTimeout(() => this.connect(), 3000)
+                else {
+                    this.log.notice('Disconnected! Something went wrong during connection!')
+                    await this.authSession.removeCreds()
+                    setTimeout(() => this.connect(), 3000)
+                }
+            }
             if (connection === 'connecting') this.log.info('Connecting to the phone!')
             if (connection === 'open') {
                 this.log.info('Connected to the phone >.<!')
@@ -42,7 +51,7 @@ export default class Devi {
             this.render.handler(await new this.message(msg, socket).build())
         })
         socket.ev.on('creds.update', async () => {
-            await this.saveCreds()
+            await this.authSession.saveCreds()
         })
         store.bind(socket.ev)
         return socket

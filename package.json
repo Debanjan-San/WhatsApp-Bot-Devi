@@ -25,6 +25,7 @@
       "url": "https://github.com/Debanjan-San/WhatsApp-Bot-Devi.git"
    },
    "dependencies": {
+      "@hapi/boom": "^10.0.1",
       "@iamrony777/baileys": "^6.5.0-7",
       "@whiskeysockets/baileys": "^6.4.1",
       "axios": "^1.5.1",

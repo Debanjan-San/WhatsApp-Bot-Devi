@@ -15,13 +15,12 @@ import Devi from './libs/Devi.js'
         waitQueueTimeoutMS: 1_00_000
     })
     const collection = mongo.db('session').collection('auth')
-    const { state, saveCreds } = await useMongoDBAuthState(collection)
-
-    new Devi(config, mongo, saveCreds, {
+    const authSession = await useMongoDBAuthState(collection)
+    new Devi(config, mongo, authSession, {
         version: (await fetchLatestBaileysVersion()).version,
         auth: {
-            creds: state.creds,
-            keys: makeCacheableSignalKeyStore(state.keys)
+            creds: authSession.state.creds,
+            keys: makeCacheableSignalKeyStore(authSession.state.keys)
         },
         logger: P({ level: 'silent' }),
         printQRInTerminal: true

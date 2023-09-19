@@ -120,10 +120,10 @@ export default class DefineMesssage {
 
     buildSender = async (jid) => {
         const isMod = this.client.config.mods.includes(jid)
-        const { notify, name, verifiedName } = await this.client.store?.getContactInfo(jid, this.client)
-        console.log(name, verifiedName, notify)
+        const { notify } = await this.client.store?.getContactInfo(jid, this.client)
+        console.log(notify)
         return {
-            username: notify || verifiedName || name || 'User',
+            username: notify || 'User',
             jid,
             isMod,
             ban: false
