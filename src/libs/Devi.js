@@ -24,7 +24,7 @@ export default class Devi {
         // prettier-ignore
         Object.assign(socket, {
             config, utils: new Utils(), log: createLogger(),
-            DB: DB, handler
+            DB, handler
         })
         return socket
     }
