@@ -1,14 +1,14 @@
 {
-   "name": "krypton",
+   "name": "Devi",
    "version": "0.0.1",
-   "description": "krytron based on JavaScript",
+   "description": "Devi based on JavaScript",
    "author": "Debanjan-San",
-   "main": "src/krypton.js",
+   "main": "src/index.js",
    "keywords": [
       "Whatsapp",
       "WhatsApp-Bot",
       "bot",
-      "wabot"
+      "Devi"
    ],
    "license": "SEE LICENSE IN LICENSE.md",
    "type": "module",
@@ -17,12 +17,12 @@
       "start": "node --optimize_for_size --max_old_space_size=460 src/index.js"
    },
    "bugs": {
-      "url": "https://github.com/Debanjan-San/krypton-WhatsappBot/issues"
+      "url": "https://github.com/Debanjan-San/WhatsApp-Bot-Devi/issues"
    },
-   "homepage": "https://github.com/Debanjan-San/krypton-WhatsappBot",
+   "homepage": "https://github.com/Debanjan-San/WhatsApp-Bot-Devi",
    "repository": {
       "type": "git",
-      "url": "https://github.com/Debanjan-San/krypton-WhatsappBot.git"
+      "url": "https://github.com/Debanjan-San/WhatsApp-Bot-Devi.git"
    },
    "dependencies": {
       "@whiskeysockets/baileys": "^6.4.1",
