@@ -8,7 +8,7 @@ export default class Devi {
 
     connect = async () => {
         socket = Baileys(this.options)
-        const { default: DB, saveContacts } = DatabaseHandler(socket)
+        const { default: DB, saveContacts } = new DatabaseHandler(socket)
         let handler
         socket.ev.on('creds.update', this.saveCreds)
         socket.ev.on('messages.upsert', async (M) => {
