@@ -1,6 +1,5 @@
 import { connect } from 'mongoose'
-import { contacts } from '../models/index'
-
+import { contacts } from '../models/index.js'
 export default class DatabaseHandler {
     connected = false
     connection

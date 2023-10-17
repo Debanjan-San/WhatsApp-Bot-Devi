@@ -1,4 +1,5 @@
 import { useMultiFileAuthState, fetchLatestBaileysVersion } from '@whiskeysockets/baileys'
+import P from 'pino'
 import Devi from './libs/Devi.js'
 ;(async () => {
     const { state, saveCreds } = await useMultiFileAuthState('session')

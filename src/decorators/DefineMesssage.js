@@ -1,4 +1,3 @@
-import { WAMessage } from '@whiskeysockets/baileys'
 import DefineGroup from './DefineGroup.js'
 import Utils from '../utils/Util.js'
 export default class DefineMesssage {
@@ -15,6 +14,7 @@ export default class DefineMesssage {
     numbers = []
 
     constructor(M, client) {
+        this.client = client
         this.sender = this.client.getContact(this.chat === 'dm' ? this.from : this.M.key.participant)
         if (M.pushName) this.sender.username = M.pushName
         if (M.message?.ephemeralMessage) this.M.message = M.message.ephemeralMessage.message
@@ -148,5 +148,3 @@ export default class DefineMesssage {
         })
     }
 }
-
-export { WAMessage }
