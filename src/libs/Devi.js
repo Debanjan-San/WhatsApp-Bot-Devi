@@ -1,11 +1,17 @@
-import Baileys from '@whiskeysockets/baileys'
+import Baileys, { fetchLatestBaileysVersion, useMultiFileAuthState } from '@whiskeysockets/baileys'
 import Utils from '../utils/Util.js'
 import { createLogger } from '../utils/Logger.js'
 import DatabaseHandler from '../handler/Database.js'
 import Message from '../decorators/DefineMesssage.js'
 import MessageHandler from '../handler/Message.js'
+
 export default class Devi {
-    constructor(config, saveCreds, options) {
+    constructor() {
+        this.config = {
+            name: 'devi',
+            mods: [],
+            prefix: '.'
+        }
         this.handler
         this.log = createLogger()
         this.databaseHandler = DatabaseHandler
@@ -14,7 +20,13 @@ export default class Devi {
     }
 
     connect = async () => {
-        socket = Baileys(this.options)
+        const { state, saveCreds } = await useMultiFileAuthState('session')
+        socket = Baileys({
+            version: (await fetchLatestBaileysVersion()).version,
+            auth: state,
+            logger: P({ level: 'silent' }),
+            printQRInTerminal: true
+        })
         const { default: DB, saveContacts } = new this.databaseHandler(socket)
         socket.ev.on('creds.update', this.saveCreds)
         socket.ev.on('messages.upsert', async (M) => {
@@ -32,7 +44,7 @@ export default class Devi {
 
         // prettier-ignore
         Object.assign(socket, {
-            config, util: new Utils(), log: this.log,
+            config: this.config, util: new Utils(), log: this.log,
             DB, handler: this.handler
         })
         return socket
