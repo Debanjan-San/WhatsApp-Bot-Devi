@@ -4,12 +4,16 @@ export default class DatabaseHandler {
     connected = false
     connection
     models = { contacts }
-    constructor(client) {}
+    constructor(client, config, log) {
+        this.client = client
+        this.config = config
+        this.log = log
+    }
     async connect() {
-        const url = process.env.MONGODB_URL
+        const url = this.config.url
         if (!url) {
-            this.client.log.error('MONGODB_URL is missing, please fill the value!')
-            process.exit(1)
+            this.log.error('MONGODB_URL is missing, please fill the value!')
+            return process.exit(1)
         }
         try {
             const { connection } = await connect(url, {
@@ -17,13 +21,13 @@ export default class DatabaseHandler {
                 useUnifiedTopology: true,
                 useFindAndModify: false
             })
-            connection.once('open', () => this.client.log.info('Database connection opened!'))
-            connection.on('connected', () => this.client.log.info('Database connected!'))
-            connection.on('error', (error) => this.client.log.error(error))
+            connection.once('open', () => this.log.info('Database connection opened!'))
+            connection.on('connected', () => this.log.info('Database connected!'))
+            connection.on('error', (error) => this.log.error(error))
             this.connection = connection
             this.connected = true
         } catch (e) {
-            this.client.log.error(e)
+            this.log.error(e)
             this.connection = undefined
             this.connected = false
         }

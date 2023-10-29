@@ -15,9 +15,10 @@ export default class DefineMesssage {
 
     constructor(M, client) {
         this.client = client
-        this.sender = this.client.getContact(this.chat === 'dm' ? this.from : this.M.key.participant)
-        if (M.pushName) this.sender.username = M.pushName
-        if (M.message?.ephemeralMessage) this.M.message = M.message.ephemeralMessage.message
+        this.M = M
+        this.sender = this.client.DB.getContact(this.chat === 'dm' ? this.from : this.M.key.participant)
+        if (this.M.pushName) this.sender.username = this.M.pushName
+        if (this.M.message?.ephemeralMessage) this.M.message = this.M.message.ephemeralMessage.message
         const { type } = this
         this.content = (() => {
             if (this.M.message?.buttonsResponseMessage)
@@ -51,7 +52,7 @@ export default class DefineMesssage {
                     id: stanzaId
                 }
                 this.quoted = {
-                    sender: this.client.getContact(participant) ?? { username: '', jid: participant, isMod: false },
+                    sender: this.client.DB.getContact(participant) ?? { username: '', jid: participant, isMod: false },
                     message,
                     react: async (emoji) => {
                         this.client.relayMessage(

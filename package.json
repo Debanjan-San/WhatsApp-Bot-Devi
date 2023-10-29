@@ -1,5 +1,5 @@
 {
-   "name": "Devi",
+   "name": "devi",
    "version": "0.0.1",
    "description": "Devi based on JavaScript",
    "author": "Debanjan-San",
@@ -8,7 +8,7 @@
       "Whatsapp",
       "WhatsApp-Bot",
       "bot",
-      "Devi"
+      "devi"
    ],
    "license": "SEE LICENSE IN LICENSE.md",
    "type": "module",

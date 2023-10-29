@@ -5,7 +5,10 @@ export default class DefineGroup {
 
     admins = new Array()
 
-    constructor(gid, client) {}
+    constructor(gid, client) {
+        this.client = client
+        this.gid = gid
+    }
 
     build = async () => {
         this.metadata = await this.client.groupMetadata(this.gid)

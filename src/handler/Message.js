@@ -3,7 +3,9 @@ export default class MessageHandler {
     commands = new Map()
     aliases = new Map()
 
-    constructor(client) {}
+    constructor(client) {
+        this.client = client
+    }
 
     handle = async (M) => {
         const inText = this.client.util.format('In: ', M.group?.title || 'Direct Message')
