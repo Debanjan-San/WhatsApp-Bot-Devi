@@ -18,7 +18,8 @@ export default class Devi {
 
     connect = async () => {
         const socket = makeWASocket(this.options)
-        const { default: DB, saveContacts } = new this.databaseHandler(socket, this.config, this.log).connect()
+        const DB = new this.databaseHandler(this.config, this.log)
+        await DB.connect()
         socket.ev.on('messages.upsert', async ({ messages }) => {
             const msg = JSON.parse(JSON.stringify(messages[0]))
             await new this.message(msg, socket).build()
@@ -32,7 +33,7 @@ export default class Devi {
             if (connection === 'connecting') this.log.info('Connecting to the phone!')
             if (connection === 'open') this.log.info('Connected to the phone >.<!')
         })
-        socket.ev.on('contacts.update', (contact) => saveContacts(contact))
+        socket.ev.on('contacts.update', (contact) => DB.saveContacts(contact))
         socket.ev.on('creds.update', this.saveCreds)
         // prettier-ignore
         Object.assign(socket, {

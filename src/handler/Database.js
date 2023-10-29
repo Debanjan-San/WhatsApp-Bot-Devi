@@ -3,9 +3,7 @@ import { contacts } from '../models/index.js'
 export default class DatabaseHandler {
     connected = false
     connection
-    models = { contacts }
-    constructor(client, config, log) {
-        this.client = client
+    constructor(config, log) {
         this.config = config
         this.log = log
     }
@@ -16,11 +14,7 @@ export default class DatabaseHandler {
             return process.exit(1)
         }
         try {
-            const { connection } = await connect(url, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                useFindAndModify: false
-            })
+            const { connection } = await connect(url)
             connection.once('open', () => this.log.info('Database connection opened!'))
             connection.on('connected', () => this.log.info('Database connected!'))
             connection.on('error', (error) => this.log.error(error))
@@ -33,9 +27,9 @@ export default class DatabaseHandler {
         }
     }
 
-    saveContacts = async (info) => {
+    saveContacts = async (infos) => {
         if (!this.contacts.has('contacts')) {
-            const data = await this.getContacts()
+            const data = this.getContact()
             this.contacts.set('contacts', data)
         }
         const data = this.contacts.get('contacts')
