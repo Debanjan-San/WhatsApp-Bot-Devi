@@ -8,20 +8,23 @@ export default class MessageHandler {
     }
 
     handle = async (M) => {
-        const inText = this.client.util.format('In: ', M.group?.title || 'Direct Message')
         const args = this.parseArgs(M.content)
-        if (!args.command) return
-        if (!args.command.startsWith(this.client.config.prefix))
-            return this.client.log.notice(`Message From: `, M.sender.username, inText)
-        args.command = args.command.slice(this.client.config.prefix.length)
-        this.client.log.info(`Command From`, M.sender.username, inText)
+        if (!args[0] || !args[0].startsWith(this.client.config.prefix))
+            return void this.client.log.notice(`(MSG): from ${M.pushName} in ${M.group?.title || 'Direct Message'}`)
+        const isCommand = M.content.startsWith(this.client.config.prefix)
+        if (!isCommand) return
         const command = this.commands.get(args.command) || this.aliases.get(args.command)
-        if (!command) return void M.reply(`Command \`${args.command}\` not found.`)
-        if (command.options.group && !M.group) return void M.reply(`Command \`${command.id}\` is a group command.`)
-        if (command.options.group && command.options.admin && !M.isAdminMessage)
-            return void M.reply(`Command \`${command.id}\` is a group command and requires admin permissions.`)
-        if (command.options.mod && !M.sender.isMod) return void M.reply(`Command \`${command.id}\` is a mod command.`)
-        this.execute(command, M, args)
+
+        this.client.log(`(CMD): ${args[0]}[${args.length - 1}])} from ${sender.username} in ${M.chat}`)
+        if (!command) return void M.reply('No Command Found! Try using one from the help list.')
+        if (!command.config?.dm && M.chat === 'dm') return void M.reply('This command can only be used in groups')
+        if (M.chat === 'group' && command.config?.adminOnly && !M.isAdminMessage)
+            return void M.reply(`Only admins are allowed to use this command`)
+        try {
+            await command.exec(M, this.parseArgs(args))
+        } catch (err) {
+            return void this.client.log.error(err.message)
+        }
     }
 
     loadCommands = () => {

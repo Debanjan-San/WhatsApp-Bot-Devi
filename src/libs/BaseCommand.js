@@ -1,10 +1,9 @@
 export default class BaseCommand {
     path = __dirname
     handler
-    constructor(client, id, options) {
+    constructor(client, handler) {
         this.client = client
-        this.id = id
-        this.options = options
+        this.handler = handler
     }
 
     exec(msg, args) {

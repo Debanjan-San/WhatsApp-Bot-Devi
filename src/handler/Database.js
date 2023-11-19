@@ -7,20 +7,20 @@ export default class DatabaseHandler {
     }
 
     connect = () => {
-        const url = process.env.MONGODB_URL
+        const url = this.config.url
         if (!url) {
-            this.client.log.error('MONGODB_URL is missing, please fill the value!')
+            this.log.error('MONGODB_URL is missing, please fill the value!')
             process.exit(1)
         }
         this.driver = new MongoDriver(url)
         this.driver
             .connect()
             .then(() => {
-                this.client.log.info('Database connection opened!')
-                this.client.log.info('Database connected!')
+                this.log.info('Database connection opened!')
+                this.log.info('Database connected!')
             })
             .catch((err) => {
-                this.client.log.error(e)
+                this.log.error(e)
                 process.exit(1)
             })
     }
