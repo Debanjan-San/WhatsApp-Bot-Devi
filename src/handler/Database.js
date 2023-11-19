@@ -1,82 +1,58 @@
-import { connect } from 'mongoose'
-import { contacts } from '../models/index.js'
+import { QuickDB } from 'quick.db'
+import { MongoDriver } from 'quickmongo'
 export default class DatabaseHandler {
-    connected = false
-    connection
     constructor(config, log) {
         this.config = config
         this.log = log
     }
-    async connect() {
-        const url = this.config.url
+
+    connect = () => {
+        const url = process.env.MONGODB_URL
         if (!url) {
-            this.log.error('MONGODB_URL is missing, please fill the value!')
-            return process.exit(1)
+            this.client.log.error('MONGODB_URL is missing, please fill the value!')
+            process.exit(1)
         }
-        try {
-            const { connection } = await connect(url)
-            connection.once('open', () => this.log.info('Database connection opened!'))
-            connection.on('connected', () => this.log.info('Database connected!'))
-            connection.on('error', (error) => this.log.error(error))
-            this.connection = connection
-            this.connected = true
-        } catch (e) {
-            this.log.error(e)
-            this.connection = undefined
-            this.connected = false
-        }
+        this.driver = new MongoDriver(url)
+        this.driver
+            .connect()
+            .then(() => {
+                this.client.log.info('Database connection opened!')
+                this.client.log.info('Database connected!')
+            })
+            .catch((err) => {
+                this.client.log.error(e)
+                process.exit(1)
+            })
     }
 
-    saveContacts = async (infos) => {
-        if (!this.contacts.has('contacts')) {
-            const data = this.getContact()
-            this.contacts.set('contacts', data)
-        }
-        const data = this.contacts.get('contacts')
-        for (const info of infos) {
-            if (info.id) {
-                const index = data.findIndex(({ id }) => id === info.id)
-                if (index >= 0) {
-                    if (info.notify !== data[index].notify) data[index].notify = info.notify
-                    continue
+    saveContacts = async (contacts) => {
+        await Promise.all(
+            contacts.map(async (contact) => {
+                if (contact.id) {
+                    await this.DB.set(contact.id, {
+                        notify: contact.notify,
+                        status: contact.status,
+                        imgUrl: contact.imgUrl,
+                        name: contact.name,
+                        verifiedName: contact.verifiedName
+                    })
                 }
-                data.push({
-                    id: info.id,
-                    notify: info.notify,
-                    status: info.status,
-                    imgUrl: info.imgUrl,
-                    name: info.name,
-                    verifiedName: info.verifiedName
-                })
-            }
-        }
-        this.contacts.set('contacts', data)
-        await contacts.updateOne({ ID: 'contacts' }, { $set: { data } })
+            })
+        )
     }
 
-    getContact = (jid) => {
-        const contact = this.contacts.get('contacts')
+    getContact = async (jid) => {
         const isMod = this.config.mods.includes(jid)
-        if (!contact)
-            return {
-                username: 'User',
-                jid,
-                isMod
-            }
-        const index = contact.findIndex(({ id }) => id === jid)
-        if (index < 0)
-            return {
-                username: 'User',
-                jid,
-                isMod
-            }
-        const { notify, verifiedName, name } = contact[index]
+        const { notify, verifiedName, name, ban = false } = await this.DB.get(jid)
         return {
             username: notify || verifiedName || name || 'User',
             jid,
-            isMod
+            isMod,
+            ban
         }
     }
 
-    contacts = new Map()
+    database = new QuickDB({
+        driver: this.driver
+    })
 }
