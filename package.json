@@ -27,6 +27,7 @@
    "dependencies": {
       "@whiskeysockets/baileys": "^6.4.1",
       "axios": "^1.5.1",
+      "better-sqlite3": "^9.1.1",
       "bluebird": "^3.7.2",
       "chalk": "4.1.1",
       "child_process": "^1.0.2",
@@ -54,6 +55,7 @@
       "quickmongo": "^5.2.0",
       "simple-git": "^3.17.0",
       "unit": "^1.4.3-0",
+      "url": "^0.11.3",
       "winston": "^3.11.0"
    }
 }

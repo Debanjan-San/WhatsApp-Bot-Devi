@@ -22,13 +22,13 @@ export default class Devi {
         await DB.connect()
         socket.ev.on('messages.upsert', async ({ messages }) => {
             const msg = JSON.parse(JSON.stringify(messages[0]))
-            await new this.message(msg, socket).build()
             const { loadCommands, handler } = new this.MessageHandler(socket)
-            this.handler = handler(msg)
+            this.handler = handler(await new this.message(msg, socket).build())
             loadCommands()
         })
         socket.ev.on('connection.update', async (update) => {
-            const { connection } = update
+            const { connection, qr } = update
+            if (qr) this.log.notice('Qr has been generated!!')
             if (connection === 'close') setTimeout(() => this.connect(), 3000)
             if (connection === 'connecting') this.log.info('Connecting to the phone!')
             if (connection === 'open') this.log.info('Connected to the phone >.<!')

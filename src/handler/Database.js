@@ -7,7 +7,7 @@ export default class DatabaseHandler {
     }
 
     connect = () => {
-        const url = this.config.url
+        /*const url = this.config.url
         if (!url) {
             this.log.error('MONGODB_URL is missing, please fill the value!')
             process.exit(1)
@@ -20,9 +20,9 @@ export default class DatabaseHandler {
                 this.log.info('Database connected!')
             })
             .catch((err) => {
-                this.log.error(e)
+                this.log.error(err)
                 process.exit(1)
-            })
+            })*/
     }
 
     saveContacts = async (contacts) => {
@@ -52,7 +52,5 @@ export default class DatabaseHandler {
         }
     }
 
-    database = new QuickDB({
-        driver: this.driver
-    })
+    DB = new QuickDB() //{driver: this.driver}
 }

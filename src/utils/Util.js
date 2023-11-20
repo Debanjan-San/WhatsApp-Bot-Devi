@@ -1,6 +1,8 @@
-import axios from 'axios'
+import { readdirSync, statSync } from 'fs'
 import { format, promisify } from 'util'
 import { exec } from 'child_process'
+import { join } from 'path'
+import axios from 'axios'
 export default class Utils {
     exec = promisify(exec)
 
@@ -13,6 +15,22 @@ export default class Utils {
     fetchBuffer = async (url) => (await axios.get(url, { responseType: 'arraybuffer' })).data
 
     isTruthy = (value) => value !== null && value !== undefined
+
+    readdirRecursive = (directory) => {
+        const results = []
+
+        const read = (path) => {
+            const files = readdirSync(path)
+
+            for (const file of files) {
+                const dir = join(path, file)
+                if (statSync(dir).isDirectory()) read(dir)
+                else results.push(dir)
+            }
+        }
+        read(directory)
+        return results
+    }
 
     extractNumbers = (content) => {
         const search = content.match(/(-\d+|\d+)/g)
