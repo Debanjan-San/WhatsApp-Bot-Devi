@@ -1,5 +1,5 @@
-import { join } from 'path'
-const __dirname = path.resolve()
+import { join, resolve } from 'path'
+const __dirname = resolve()
 
 export default class MessageHandler {
     /**
