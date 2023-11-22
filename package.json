@@ -42,6 +42,7 @@
       "human-readable": "^0.2.1",
       "linkifyjs": "^4.1.1",
       "mindee": "^4.0.1",
+      "module": "^1.2.5",
       "moment-timezone": "^0.5.40",
       "mongoose": "^7.0.3",
       "os": "^0.1.2",

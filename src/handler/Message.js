@@ -37,8 +37,7 @@ export default class MessageHandler {
         files.map((file) => {
             const filename = file.split('/')
             if (!filename[filename.length - 1].startsWith('_')) {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const command = new (import(file))(this.client, this)
+                const command = new (require(file).default)(this.client, this)
                 this.commands.set(command.config.command, command)
                 if (command.config.aliases) command.config.aliases.forEach((alias) => this.aliases.set(alias, command))
                 this.client.log.info(`Loaded: ${command.config.command} from ${file}`)

@@ -1,4 +1,4 @@
-import BaseCommand from '../../lib/BaseCommand'
+import BaseCommand from '../../libs/BaseCommand.js'
 
 export default class Command extends BaseCommand {
     constructor(client, handler) {
