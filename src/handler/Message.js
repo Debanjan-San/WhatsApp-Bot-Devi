@@ -10,12 +10,12 @@ export default class MessageHandler {
 
     handler = async (M) => {
         const context = this.parseArgs(M.content)
-        const { args } = context
+        const { args, cmd } = context
         if (!args[0] || !args[0].startsWith(this.client.config.prefix))
             return void this.client.log.notice(`(MSG): from ${M.pushName} in ${M.group?.title || 'Direct Message'}`)
         const isCommand = M.content.startsWith(this.client.config.prefix)
         if (!isCommand) return
-        const command = this.commands.get(args.command) || this.aliases.get(args.command)
+        const command = this.commands.get(cmd) || this.aliases.get(cmd)
 
         this.client.log(`(CMD): ${args[0]}[${args.length - 1}])} from ${sender.username} in ${M.chat}`)
         if (!command) return void M.reply('No Command Found! Try using one from the help list.')
