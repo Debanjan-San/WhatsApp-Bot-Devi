@@ -39,7 +39,7 @@ export default class Devi {
             this.handler = this.render.handler(await new this.message(msg, socket).build())
         })
         socket.ev.on('creds.update', async () => {
-            await saveCreds()
+            await this.saveCreds()
         })
         store.bind(sock.ev)
         // prettier-ignore
