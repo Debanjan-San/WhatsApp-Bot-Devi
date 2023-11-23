@@ -9,6 +9,8 @@ export default class DefineMesssage {
 
     util = new Utils()
 
+    initialize = async (jid, client) => await client.store?.getContactInfo(jid, client)
+
     isAdminMessage = false
 
     numbers = []
@@ -16,8 +18,11 @@ export default class DefineMesssage {
     constructor(M, client) {
         this.client = client
         this.M = M
-        this.sender = this.client.DB.getContact(this.chat === 'dm' ? this.from : this.M.key.participant)
-        if (this.M.pushName) this.sender.username = this.M.pushName
+        this.sender = this.initialize(
+            this.chat === 'dm' ? this.from : this.util.sanitizeJids(client.user.id),
+            this.client
+        )
+        //if (this.M.pushName) this.sender.username = this.M.pushName
         if (this.M.message?.ephemeralMessage) this.M.message = this.M.message.ephemeralMessage.message
         const { type } = this
         this.content = (() => {

@@ -1,9 +1,11 @@
+import { URL } from 'url'
 export default class BaseCommand {
-    path = __dirname
+    path = new URL('.', import.meta.url).pathname
     handler
-    constructor(client, handler) {
+    constructor(client, handler, config) {
         this.client = client
         this.handler = handler
+        this.config = config
     }
 
     exec(msg, args) {

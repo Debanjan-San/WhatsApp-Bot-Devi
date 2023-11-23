@@ -25,32 +25,5 @@ export default class DatabaseHandler {
             })*/
     }
 
-    saveContacts = async (contacts) => {
-        await Promise.all(
-            contacts.map(async (contact) => {
-                if (contact.id) {
-                    await this.DB.set(contact.id, {
-                        notify: contact.notify,
-                        status: contact.status,
-                        imgUrl: contact.imgUrl,
-                        name: contact.name,
-                        verifiedName: contact.verifiedName
-                    })
-                }
-            })
-        )
-    }
-
-    getContact = async (jid) => {
-        const isMod = this.config.mods.includes(jid)
-        const { notify, verifiedName, name, ban = false } = await this.DB.get(jid)
-        return {
-            username: notify || verifiedName || name || 'User',
-            jid,
-            isMod,
-            ban
-        }
-    }
-
     DB = new QuickDB() //{driver: this.driver}
 }

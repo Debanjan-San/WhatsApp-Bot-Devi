@@ -25,6 +25,7 @@
       "url": "https://github.com/Debanjan-San/WhatsApp-Bot-Devi.git"
    },
    "dependencies": {
+      "@iamrony777/baileys": "^6.5.0-7",
       "@whiskeysockets/baileys": "^6.4.1",
       "axios": "^1.5.1",
       "better-sqlite3": "^9.1.1",
@@ -44,6 +45,7 @@
       "mindee": "^4.0.1",
       "module": "^1.2.5",
       "moment-timezone": "^0.5.40",
+      "mongodb": "^6.3.0",
       "mongoose": "^7.0.3",
       "os": "^0.1.2",
       "parse-ms": "^2.1.0",

@@ -12,6 +12,6 @@ export default class Command extends BaseCommand {
     }
 
     exec = async (M) => {
-        return void (await M.reply(`Hi ${M.sender.username}!`))
+        await M.reply(`Hi ${M.sender.username}!`)
     }
 }

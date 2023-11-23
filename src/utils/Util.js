@@ -2,6 +2,7 @@ import { readdirSync, statSync } from 'fs'
 import { format, promisify } from 'util'
 import { exec } from 'child_process'
 import { join } from 'path'
+import { jidDecode } from '@whiskeysockets/baileys'
 import axios from 'axios'
 export default class Utils {
     exec = promisify(exec)
