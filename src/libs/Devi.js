@@ -5,13 +5,13 @@ import DatabaseHandler from '../handler/Database.js'
 import Message from '../decorators/DefineMesssage.js'
 import MessageHandler from '../handler/Message.js'
 export default class Devi {
-    constructor(config, mongoClient, saveCreds, options) {
+    constructor(config, mongo, saveCreds, options) {
         this.log = createLogger()
         this.databaseHandler = DatabaseHandler
         this.message = Message
         this.MessageHandler = MessageHandler
         this.config = config
-        this.mongoClient = mongoClient
+        this.mongo = mongo
         this.saveCreds = saveCreds
         this.options = options
     }
@@ -20,7 +20,7 @@ export default class Devi {
         const socket = makeWASocket(this.options)
         const store = makeMongoStore({
             filterChats: true,
-            db: this.mongoClient.db('session'),
+            db: this.mongo.db('session'),
             autoDeleteStatusMessage: true
         })
         const DB = new this.databaseHandler(this.config, this.log)
@@ -30,23 +30,21 @@ export default class Devi {
             if (qr) this.log.notice('Qr has been generated!!')
             if (connection === 'close') setTimeout(() => this.connect(), 3000)
             if (connection === 'connecting') this.log.info('Connecting to the phone!')
-            if (connection === 'open') this.log.info('Connected to the phone >.<!')
-            this.render = new this.MessageHandler(socket)
-            this.render.loadCommands()
+            if (connection === 'open') {
+                this.log.info('Connected to the phone >.<!')
+                Object.assign(socket, { config: this.config, util: new Utils(), log: this.log, DB, store })
+                this.render = new this.MessageHandler(socket)
+                this.render.loadCommands()
+            }
         })
         socket.ev.on('messages.upsert', async ({ messages }) => {
             const msg = JSON.parse(JSON.stringify(messages[0]))
-            this.handler = this.render.handler(await new this.message(msg, socket).build())
+            this.render.handler(await new this.message(msg, socket).build())
         })
         socket.ev.on('creds.update', async () => {
             await this.saveCreds()
         })
-        store.bind(sock.ev)
-        // prettier-ignore
-        Object.assign(socket, {
-            config: this.config, util: new Utils(), log: this.log,
-            DB, handler: this.handler, store
-        })
+        store.bind(socket.ev)
         return socket
     }
 }

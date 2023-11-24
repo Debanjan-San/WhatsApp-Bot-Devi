@@ -9,8 +9,6 @@ export default class DefineMesssage {
 
     util = new Utils()
 
-    initialize = async (jid, client) => await client.store?.getContactInfo(jid, client)
-
     isAdminMessage = false
 
     numbers = []
@@ -18,10 +16,7 @@ export default class DefineMesssage {
     constructor(M, client) {
         this.client = client
         this.M = M
-        this.sender = this.initialize(
-            this.chat === 'dm' ? this.from : this.util.sanitizeJids(client.user.id),
-            this.client
-        )
+        this.sender = this.buildSender(this.chat === 'dm' ? this.from : this.util.sanitizeJids(client.user.id))
         //if (this.M.pushName) this.sender.username = this.M.pushName
         if (this.M.message?.ephemeralMessage) this.M.message = this.M.message.ephemeralMessage.message
         const { type } = this
@@ -57,7 +52,11 @@ export default class DefineMesssage {
                     id: stanzaId
                 }
                 this.quoted = {
-                    sender: this.client.DB.getContact(participant) ?? { username: '', jid: participant, isMod: false },
+                    sender: this.buildSender(participant) ?? {
+                        username: '',
+                        jid: participant,
+                        isMod: false
+                    },
                     message,
                     react: async (emoji) => {
                         this.client.relayMessage(
@@ -117,6 +116,18 @@ export default class DefineMesssage {
             },
             options
         )
+    }
+
+    buildSender = async (jid) => {
+        const isMod = this.client.config.mods.includes(jid)
+        const { notify, name, verifiedName } = await this.client.store?.getContactInfo(jid, this.client)
+        console.log(name, verifiedName, notify)
+        return {
+            username: notify || verifiedName || name || 'User',
+            jid,
+            isMod,
+            ban: false
+        }
     }
 
     replyWithButtons = async (text, button, media) => {

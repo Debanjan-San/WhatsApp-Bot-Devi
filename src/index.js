@@ -17,7 +17,7 @@ import Devi from './libs/Devi.js'
     const collection = mongo.db('session').collection('auth')
     const { state, saveCreds } = await useMongoDBAuthState(collection)
 
-    new Devi(config, MongoClient, saveCreds, {
+    new Devi(config, mongo, saveCreds, {
         version: (await fetchLatestBaileysVersion()).version,
         auth: {
             creds: state.creds,
