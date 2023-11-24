@@ -16,8 +16,11 @@ export default class DefineMesssage {
     constructor(M, client) {
         this.client = client
         this.M = M
-        this.sender = this.buildSender(this.chat === 'dm' ? this.from : this.util.sanitizeJids(client.user.id))
-        //if (this.M.pushName) this.sender.username = this.M.pushName
+        if (this.M.pushName)
+            this.sender = {
+                username: this.M.pushName,
+                jid: this.chat === 'dm' ? this.from : this.util.sanitizeJids(client.user.id)
+            }
         if (this.M.message?.ephemeralMessage) this.M.message = this.M.message.ephemeralMessage.message
         const { type } = this
         this.content = (() => {
@@ -52,11 +55,7 @@ export default class DefineMesssage {
                     id: stanzaId
                 }
                 this.quoted = {
-                    sender: this.buildSender(participant) ?? {
-                        username: '',
-                        jid: participant,
-                        isMod: false
-                    },
+                    sender: participant,
                     message,
                     react: async (emoji) => {
                         this.client.relayMessage(
@@ -118,7 +117,7 @@ export default class DefineMesssage {
         )
     }
 
-    buildSender = async (jid) => {
+    getUserInfo = async (jid) => {
         const isMod = this.client.config.mods.includes(jid)
         const { notify } = await this.client.store?.getContactInfo(jid, this.client)
         console.log(notify)
