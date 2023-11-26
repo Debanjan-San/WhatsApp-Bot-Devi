@@ -10,7 +10,7 @@ export default class MessageHandler {
 
     handler = async (M) => {
         const context = this.parseArgs(M.content)
-        const { cmd } = context
+        const { args, cmd } = context
         if (!M.content.startsWith(this.client.config.prefix))
             return void this.client.log.notice(
                 `(MSG): from ${M.sender.username} in ${M.group?.title || 'Direct Message'}`
@@ -45,7 +45,7 @@ export default class MessageHandler {
                 this.client.log.info(`Loaded: ${command.config.command} from ${command.config.category}`)
             }
         }
-        await this.client.log.notice(`Successfully Loaded ${this.commands.size} Commands`)
+        this.client.log.notice(`Successfully Loaded ${this.commands.size} Commands`)
     }
 
     parseArgs = (raw) => {
