@@ -16,11 +16,9 @@ export default class DefineMesssage {
     constructor(M, client) {
         this.client = client
         this.M = M
-        if (this.M.pushName)
-            this.sender = {
-                username: this.M.pushName,
-                jid: this.chat === 'dm' ? this.from : this.util.sanitizeJids(client.user.id)
-            }
+        this.sender = {}
+        this.sender.jid = this.chat === 'dm' ? this.from : this.util.sanitizeJids(client.user.id)
+        if (this.M.pushName) this.sender.username = this.M.pushName
         if (this.M.message?.ephemeralMessage) this.M.message = this.M.message.ephemeralMessage.message
         const { type } = this
         this.content = (() => {
@@ -115,18 +113,6 @@ export default class DefineMesssage {
             },
             options
         )
-    }
-
-    getUserInfo = async (jid) => {
-        const isMod = this.client.config.mods.includes(jid)
-        const { notify } = await this.client.store?.getContactInfo(jid, this.client)
-        console.log(notify)
-        return {
-            username: notify || 'User',
-            jid,
-            isMod,
-            ban: false
-        }
     }
 
     replyWithButtons = async (text, button, media) => {

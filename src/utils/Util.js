@@ -2,7 +2,7 @@ import { readdirSync, statSync } from 'fs'
 import { format, promisify } from 'util'
 import { exec } from 'child_process'
 import { join } from 'path'
-import { jidDecode } from '@whiskeysockets/baileys'
+import { jidDecode } from '@iamrony777/baileys'
 import axios from 'axios'
 export default class Utils {
     exec = promisify(exec)
@@ -54,10 +54,10 @@ export default class Utils {
         return Math.random() * (max - min) + min
     }
 
-    getRandomItem = (array) => array[this.getRandomInt(0, array.length - 1)]
+    getRandomItem = (array) => array[getRandomInt(0, array.length - 1)]
 
     getRandomItems = (array, count) => {
-        return new Array(count).fill(0).map(() => this.getRandomItem(array))
+        return new Array(count).fill(0).map(() => getRandomItem(array))
     }
 
     getUrls = (url) => {
@@ -78,9 +78,6 @@ export default class Utils {
     }
 
     sanitizeJids = (jid) => {
-        // if jid has :, remove it and the part after it till there is an @
-        // then join the two parts with
-        // example: 123:1@w.net -> 123@w.net
         if (/:\d+@/gi.test(jid)) {
             const decoded = jidDecode(jid)
             if (decoded?.server && decoded.user) {
@@ -88,5 +85,16 @@ export default class Utils {
             }
             return jid
         } else return jid
+    }
+
+    getUserInfo = async (jid, client) => {
+        const isMod = client.config.mods.includes(jid)
+        const { notify } = await client.store?.getContactInfo(jid, client)
+        return {
+            username: notify || 'User',
+            jid,
+            isMod,
+            ban: false
+        }
     }
 }

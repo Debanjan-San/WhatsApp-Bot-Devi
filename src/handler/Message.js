@@ -31,22 +31,21 @@ export default class MessageHandler {
         }
     }
 
-    loadCommands = () => {
+    loadCommands = async () => {
         this.client.log.info('Loading Commands...')
         const __dirname = new URL('.', import.meta.url).pathname
         const path = join(__dirname, '..', 'commands')
         const files = this.client.util.readdirRecursive(path)
-        files.map(async (file) => {
+        for (const file of files) {
             const filename = file.split('/')
             if (!filename[filename.length - 1].startsWith('_')) {
                 const command = new (Object.values(await import(file))[0])(this.client, this)
                 this.commands.set(command.config.command, command)
                 if (command.config.aliases) command.config.aliases.forEach((alias) => this.aliases.set(alias, command))
-                this.client.log.info(`Loaded: ${command.config.command} from ${file}`)
-                return command
+                this.client.log.info(`Loaded: ${command.config.command} from ${command.config.category}`)
             }
-        })
-        this.client.log.notice(`Successfully Loaded ${this.commands.size} Commands`)
+        }
+        await this.client.log.notice(`Successfully Loaded ${this.commands.size} Commands`)
     }
 
     parseArgs = (raw) => {

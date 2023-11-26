@@ -12,7 +12,6 @@ export default class Command extends BaseCommand {
     }
 
     exec = async (M) => {
-        await M.reply(`Hi ${M.sender.username}!`)
-        console.log(M.sender)
+        await M.reply(`*Hi ${M.sender.username}!*`)
     }
 }
