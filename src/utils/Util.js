@@ -90,7 +90,7 @@ export default class Utils {
     getUserInfo = async (jid, client) => {
         const isMod = client.config.mods.includes(jid)
         const { notify } = await client.store?.getContactInfo(jid, client)
-        const user = await this.client.DB.user.get(jid)
+        const user = await client.DB.user.get(jid)
         return {
             username: notify || 'User',
             jid,
