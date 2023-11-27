@@ -7,7 +7,11 @@ import Devi from './libs/Devi.js'
         name: 'devi',
         mods: [],
         prefix: '.',
-        url: 'mongodb+srv://debayand:das@cluster0.m1doif4.mongodb.net/?retryWrites=true&w=majority'
+        url: 'mongodb+srv://cara:das1234@cluster0.d2czz.mongodb.net/?retryWrites=true&w=majority'
+    }
+    if (!config.url) {
+        console.error('No mongo url provided')
+        return process.exit(1)
     }
     const mongo = new MongoClient(config.url, {
         socketTimeoutMS: 1_00_000,

@@ -4,6 +4,11 @@ export default class DatabaseHandler {
     constructor(config, log) {
         this.config = config
         this.log = log
+        Object.assign(this, {
+            command: this.DB.table('command'),
+            group: this.DB.table('guild'),
+            user: this.DB.table('user')
+        })
     }
 
     connect = () => {
