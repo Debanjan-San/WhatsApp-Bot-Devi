@@ -2,6 +2,7 @@ import { makeWASocket, makeMongoStore, DisconnectReason } from '@iamrony777/bail
 import { Boom } from '@hapi/boom'
 import Utils from '../utils/Util.js'
 import Message from '../decorators/DefineMesssage.js'
+import Participant from '../handler/Participants.js'
 import MessageHandler from '../handler/Message.js'
 export default class Devi {
     constructor(config, mongo, authSession, log, databaseHandler, options) {
@@ -9,6 +10,7 @@ export default class Devi {
         this.DB = databaseHandler
         this.message = Message
         this.MessageHandler = MessageHandler
+        this.Participant = Participant
         this.config = config
         this.mongo = mongo
         this.authSession = authSession
@@ -39,9 +41,11 @@ export default class Devi {
                 this.log.info('Connected to the phone >.<!')
                 Object.assign(socket, { config: this.config, util: new Utils(), log: this.log, DB: this.DB, store })
                 this.render = new this.MessageHandler(socket)
+                this.event = new this.Participant(socket)
                 this.render.loadCommands()
             }
         })
+        socket.ev.on('group-participants.update', async (event) => await this.event.participantUpdate(event))
         socket.ev.on('messages.upsert', async ({ messages }) => {
             const msg = JSON.parse(JSON.stringify(messages[0]))
             this.render.handler(await new this.message(msg, socket).build())
