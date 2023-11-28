@@ -10,16 +10,15 @@ export default class MessageHandler {
 
     handler = async (M) => {
         const context = this.parseArgs(M.content)
-        const { cmd } = context
-        if (!M.content.startsWith(this.client.config.prefix))
+        const isCommand = M.content.startsWith(this.client.config.prefix)
+        if (!isCommand)
             return void this.client.log.notice(
                 `(MSG): from ${M.sender.username} in ${M.group?.title || 'Direct Message'}`
             )
-        const isCommand = M.content.startsWith(this.client.config.prefix)
-        if (!isCommand) return
+        const { cmd } = context
         const command = this.commands.get(cmd) || this.aliases.get(cmd)
         const user = await this.client.util.getUserInfo(M.sender.jid, this.client)
-        const state = this.client.DB.command.get(command.config.command)
+        const state = this.client.DB.command.get(command.config?.command)
         this.client.log.notice(`(CMD): ${cmd} from ${M.sender.username} in ${M.group?.title || 'Direct Message'}`)
         if (state.isDisabled) return void M.reply(`This command has been disabled!\nReason: ${state.reason}`)
         if (!command) return void M.reply('No Command Found! Try using one from the help list.')

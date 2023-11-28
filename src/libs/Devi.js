@@ -1,14 +1,12 @@
 import { makeWASocket, makeMongoStore, DisconnectReason } from '@iamrony777/baileys'
 import { Boom } from '@hapi/boom'
 import Utils from '../utils/Util.js'
-import { createLogger } from '../utils/Logger.js'
-import DatabaseHandler from '../handler/Database.js'
 import Message from '../decorators/DefineMesssage.js'
 import MessageHandler from '../handler/Message.js'
 export default class Devi {
-    constructor(config, mongo, authSession, options) {
-        this.log = createLogger()
-        this.databaseHandler = DatabaseHandler
+    constructor(config, mongo, authSession, log, databaseHandler, options) {
+        this.log = log
+        this.DB = databaseHandler
         this.message = Message
         this.MessageHandler = MessageHandler
         this.config = config
@@ -24,8 +22,6 @@ export default class Devi {
             db: this.mongo.db('session'),
             autoDeleteStatusMessage: true
         })
-        const DB = new this.databaseHandler(this.config, this.log)
-        await DB.connect()
         socket.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect, qr } = update
             const { statusCode } = new Boom(lastDisconnect?.error).output
@@ -41,7 +37,7 @@ export default class Devi {
             if (connection === 'connecting') this.log.info('Connecting to the phone!')
             if (connection === 'open') {
                 this.log.info('Connected to the phone >.<!')
-                Object.assign(socket, { config: this.config, util: new Utils(), log: this.log, DB, store })
+                Object.assign(socket, { config: this.config, util: new Utils(), log: this.log, DB: this.DB, store })
                 this.render = new this.MessageHandler(socket)
                 this.render.loadCommands()
             }
