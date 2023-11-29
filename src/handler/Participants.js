@@ -1,3 +1,4 @@
+import DefineGroup from '../decorators/DefineGroup.js'
 export default class Participant {
     constructor(client) {
         this.client = client
@@ -5,8 +6,8 @@ export default class Participant {
 
     participantUpdate = async (event) => {
         const { participants, id, action } = event
-        const isEvents = await this.client.DB.group.get(id).events
-        if (!isEvents) return
+        const { isEventsActive } = await new DefineGroup(id, this.client).build()
+        if (!isEventsActive) return
         for (const participant of participants) {
             const caption = this.events[action]
             const text = caption[Math.floor(Math.random() * caption.length)]

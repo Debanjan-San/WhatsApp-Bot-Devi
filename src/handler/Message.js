@@ -1,5 +1,6 @@
 import { join } from 'path'
 import { URL } from 'url'
+import canvafy from 'canvafy'
 export default class MessageHandler {
     commands = new Map()
     aliases = new Map()
@@ -14,13 +15,13 @@ export default class MessageHandler {
         const isCommand = M.content.startsWith(this.client.config.prefix)
         if (!isCommand)
             return void this.client.log.notice(
-                `(MSG): from ${M.sender.username} in ${M.group?.title || 'Direct Message'}`
+                `(MSG): from ${M.sender.username ?? ''}  in ${M.group?.title || 'Direct Message'}`
             )
         const { cmd } = context
         const command = this.commands.get(cmd) || this.aliases.get(cmd)
-        const user = await this.client.util.getUserInfo(M.sender.jid, this.client)
+        const user = await this.client.DB.getUserInfo(M.sender.jid)
         const state = this.client.DB.command.get(command.config?.command)
-        this.client.log.notice(`(CMD): ${cmd} from ${M.sender.username} in ${M.group?.title || 'Direct Message'}`)
+        this.client.log.notice(`(CMD): ${cmd} from ${M.sender.username ?? ''} in ${M.group?.title || 'Direct Message'}`)
         if (state.isDisabled) return void M.reply(`This command has been disabled!\nReason: ${state.reason}`)
         if (!command) return void M.reply('No Command Found! Try using one from the help list.')
         if (user.ban) return void M.reply(`You\'re Banned from using commands\nResason: ${user.reason}`)
@@ -32,8 +33,26 @@ export default class MessageHandler {
             await command.exec(M, context)
             await this.client.DB.user.add(`${M.sender.jid}.exp`, command.config.exp)
             if (user.requiredXpToLevelUp < user.exp) {
+                const url =
+                    (await this.client.profilePictureUrl(M.sender.jid, 'image').catch(() => null)) ??
+                    'https://static.wikia.nocookie.net/v__/images/7/73/Fuseu404notfound.png/revision/latest?cb=20171104190424&path-prefix=vocaloidlyrics'
+                const image = await new canvafy.LevelUp()
+                    .setAvatar(await this.client.util.fetchBuffer(url))
+                    .setBackground(
+                        'image',
+                        'https://marketplace.canva.com/EAFIJGWz8q4/1/0/1600w/canva-red-black-white-anime-podcast-twitch-banner-UWLRt79y-g4.jpg'
+                    )
+                    .setUsername(M.sender.username)
+                    .setBorder('#2EC22E')
+                    .setAvatarBorder('#2EC22E')
+                    .setOverlayOpacity(0.7)
+                    .setLevels(user.level, user.level + 1)
+                    .build()
                 await this.client.DB.user.add(`${M.sender.jid}.level`, 1)
-                await M.reply(`${M.sender.username} has leveled up to ${user.level + 1} from ${user.level}`)
+                await M.replyRaw({
+                    caption: `${M.sender.username} has leveled up to ${user.level + 1} from ${user.level}`,
+                    image
+                })
             }
         } catch (err) {
             return void this.client.log.error(err.message)
@@ -41,8 +60,7 @@ export default class MessageHandler {
     }
 
     moderate = async (M) => {
-        const isMods = await this.client.DB.group.get(M.from).mods
-        if (!isMods) return
+        if (!M.group.isModActive) return
         if (M.chat === 'dm') return
         if (!M.group?.admins.includes(this.client.util.sanitizeJid(this.client.user?.id ?? ''))) return
         if (M.isAdminMessage) return

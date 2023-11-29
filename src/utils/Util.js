@@ -1,4 +1,3 @@
-import { getStats } from '../libs/LevelSystem.js'
 import { readdirSync, statSync } from 'fs'
 import { format, promisify } from 'util'
 import { exec } from 'child_process'
@@ -95,26 +94,5 @@ export default class Utils {
             }
             return jid
         } else return jid
-    }
-
-    getUserInfo = async (jid, client) => {
-        const isMod = client.config.mods.includes(jid)
-        const { notify } = await client.store?.getContactInfo(jid, client)
-        const exp = (await client.DB.user.get(`${jid}.exp`)) ?? 0
-        const level = (await client.DB.user.get(`${jid}.level`)) ?? 1
-        const ban = (await client.DB.user.get(`${jid}.ban`)) ?? false
-        const reason = (await client.DB.user.get(`${jid}.username`)) ?? ''
-        const { requiredXpToLevelUp, rank } = getStats(level)
-        return {
-            username: notify ?? 'User',
-            jid,
-            isMod,
-            exp,
-            level,
-            ban,
-            reason,
-            requiredXpToLevelUp,
-            rank
-        }
     }
 }
