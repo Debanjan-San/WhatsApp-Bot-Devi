@@ -97,7 +97,7 @@ export default class Utils {
         } else return jid
     }
 
-    getUserInfo = async (jid) => {
+    getUserInfo = async (jid, client) => {
         const isMod = client.config.mods.includes(jid)
         const { notify } = await client.store?.getContactInfo(jid, client)
         const exp = (await client.DB.user.get(`${jid}.exp`)) ?? 0
