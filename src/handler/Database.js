@@ -34,7 +34,7 @@ export default class DatabaseHandler {
     }
 
     getUserInfo = async (jid, client) => {
-        const isMod = client.config.mods.includes(jid)
+        const isMod = this.config.mods.includes(jid)
         const { notify } = await client.store?.getContactInfo(jid, client)
         const exp = (await this.user.get(`${jid}.exp`)) ?? 0
         const level = (await this.user.get(`${jid}.level`)) ?? 1
