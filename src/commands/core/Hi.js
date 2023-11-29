@@ -4,15 +4,16 @@ export default class Command extends BaseCommand {
     constructor(client, handler) {
         super(client, handler, {
             command: 'hi',
-            description: 'To test the bot',
             category: 'core',
-            usage: `${client.config.prefix}hi`,
-            dm: true
+            description: {
+                content: 'Say hello to the bot.'
+            },
+            dm: true,
+            exp: 1
         })
     }
 
     exec = async (M) => {
-        await M.reply(`*Hi ${M.sender.username}!*`)
-        console.log(this.client.DB)
+        await M.reply(`Hi ${M.sender.username}!`)
     }
 }

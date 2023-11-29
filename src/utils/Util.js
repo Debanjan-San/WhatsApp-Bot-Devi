@@ -1,3 +1,4 @@
+import { getStats } from '../libs/LevelSystem.js'
 import { readdirSync, statSync } from 'fs'
 import { format, promisify } from 'util'
 import { exec } from 'child_process'
@@ -32,6 +33,15 @@ export default class Utils {
         read(directory)
         return results
     }
+
+    bufferToBase64 = (buffer) =>
+        new Promise((resolve) => {
+            const buff = new Buffer(buffer)
+            const base64string = buff.toString('base64') // https://nodejs.org/api/buffer.html#buftostringencoding-start-end
+            return setTimeout(() => {
+                resolve(base64string)
+            }, 1000)
+        })
 
     extractNumbers = (content) => {
         const search = content.match(/(-\d+|\d+)/g)
@@ -87,16 +97,24 @@ export default class Utils {
         } else return jid
     }
 
-    getUserInfo = async (jid, client) => {
+    getUserInfo = async (jid) => {
         const isMod = client.config.mods.includes(jid)
         const { notify } = await client.store?.getContactInfo(jid, client)
-        const user = await client.DB.user.get(jid)
+        const exp = (await client.DB.user.get(`${jid}.exp`)) ?? 0
+        const level = (await client.DB.user.get(`${jid}.level`)) ?? 1
+        const ban = (await client.DB.user.get(`${jid}.ban`)) ?? false
+        const reason = (await client.DB.user.get(`${jid}.username`)) ?? ''
+        const { requiredXpToLevelUp, rank } = getStats(level)
         return {
-            username: notify || 'User',
+            username: notify ?? 'User',
             jid,
             isMod,
-            ban: user ? user.ban : false,
-            reason: user ? user.reason : ''
+            exp,
+            level,
+            ban,
+            reason,
+            requiredXpToLevelUp,
+            rank
         }
     }
 }

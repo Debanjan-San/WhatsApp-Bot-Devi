@@ -9,6 +9,7 @@ export default class MessageHandler {
     }
 
     handler = async (M) => {
+        this.moderate(M)
         const context = this.parseArgs(M.content)
         const isCommand = M.content.startsWith(this.client.config.prefix)
         if (!isCommand)
@@ -29,8 +30,37 @@ export default class MessageHandler {
             return void M.reply(`Only admins are allowed to use this command`)
         try {
             await command.exec(M, context)
+            await this.client.DB.user.add(`${M.sender.jid}.exp`, command.config.exp)
+            if (user.requiredXpToLevelUp < user.exp) {
+                await this.client.DB.user.add(`${M.sender.jid}.level`, 1)
+                await M.reply(`${M.sender.username} has leveled up to ${user.level + 1} from ${user.level}`)
+            }
         } catch (err) {
             return void this.client.log.error(err.message)
+        }
+    }
+
+    moderate = async (M) => {
+        const isMods = await this.client.DB.group.get(M.from).mods
+        if (!isMods) return
+        if (M.chat === 'dm') return
+        if (!M.group?.admins.includes(this.client.util.sanitizeJid(this.client.user?.id ?? ''))) return
+        if (M.isAdminMessage) return
+        if (M.sender.isMod) return
+        const urls = Array.from(this.client.util.getUrls(M.content))
+        if (urls.length > 0) {
+            const groupinvites = urls.filter((url) => url.includes('chat.whatsapp.com'))
+            if (groupinvites.length > 0) {
+                groupinvites.forEach(async (invite) => {
+                    const code = await this.client.groupInviteCode(M.from)
+                    const inviteSplit = invite.split('/')
+                    if (inviteSplit[inviteSplit.length - 1] !== code) {
+                        M.reply('Take care intruder and get some help!!')
+                        await this.client.sendMessage(M.from, { delete: M.key })
+                        return void (await this.client.groupParticipantsUpdate(M.from, [M.sender.jid], 'remove'))
+                    }
+                })
+            }
         }
     }
 

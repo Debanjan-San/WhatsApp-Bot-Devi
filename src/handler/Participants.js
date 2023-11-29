@@ -5,6 +5,8 @@ export default class Participant {
 
     participantUpdate = async (event) => {
         const { participants, id, action } = event
+        const isEvents = await this.client.DB.group.get(id).events
+        if (!isEvents) return
         for (const participant of participants) {
             const caption = this.events[action]
             const text = caption[Math.floor(Math.random() * caption.length)]

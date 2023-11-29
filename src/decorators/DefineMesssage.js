@@ -17,7 +17,12 @@ export default class DefineMesssage {
         this.client = client
         this.M = M
         this.sender = {}
-        this.sender.jid = this.chat === 'dm' ? this.from : this.util.sanitizeJids(client.user.id)
+        this.sender.jid =
+            this.chat === 'dm' && this.M.key.fromMe
+                ? this.client.util.sanitizeJid(this.client.user?.id || '')
+                : this.chat === 'group'
+                ? this.client.util.sanitizeJid(M.key.participant || '')
+                : this.client.util.sanitizeJid(this.from)
         if (this.M.pushName) this.sender.username = this.M.pushName
         if (this.M.message?.ephemeralMessage) this.M.message = this.M.message.ephemeralMessage.message
         const { type } = this
