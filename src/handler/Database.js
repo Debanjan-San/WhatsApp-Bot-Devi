@@ -36,10 +36,10 @@ export default class DatabaseHandler {
     getUserInfo = async (jid, client) => {
         const isMod = client.config.mods.includes(jid)
         const { notify } = await client.store?.getContactInfo(jid, client)
-        const exp = (await client.DB.user.get(`${jid}.exp`)) ?? 0
-        const level = (await client.DB.user.get(`${jid}.level`)) ?? 1
-        const ban = (await client.DB.user.get(`${jid}.ban`)) ?? false
-        const reason = (await client.DB.user.get(`${jid}.username`)) ?? ''
+        const exp = (await this.user.get(`${jid}.exp`)) ?? 0
+        const level = (await this.user.get(`${jid}.level`)) ?? 1
+        const ban = (await this.user.get(`${jid}.ban`)) ?? false
+        const reason = (await this.user.get(`${jid}.username`)) ?? ''
         const { requiredXpToLevelUp, rank } = getStats(level)
         return {
             username: notify ?? 'User',
