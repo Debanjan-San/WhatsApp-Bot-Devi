@@ -1,17 +1,13 @@
 import { makeCacheableSignalKeyStore, fetchLatestBaileysVersion, useMongoDBAuthState } from '@iamrony777/baileys'
 import { createLogger } from './utils/Logger.js'
 import DatabaseHandler from './handler/Database.js'
+import getConfig from './getConfig.js'
 import { MongoClient } from 'mongodb'
 import P from 'pino'
 import Devi from './libs/Devi.js'
 ;(async () => {
     const log = createLogger()
-    const config = {
-        name: 'devi',
-        mods: [],
-        prefix: '.',
-        url: 'mongodb+srv://cara:das1234@cluster0.d2czz.mongodb.net/?retryWrites=true&w=majority'
-    }
+    const config = getConfig()
     if (!config.url) {
         log.error('No mongo url provided')
         return process.exit(1)

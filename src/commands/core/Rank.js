@@ -14,7 +14,7 @@ export default class Command extends BaseCommand {
     }
 
     exec = async (M) => {
-        const { rank, level, exp, requiredXpToLevelUp } = await this.client.DB.getUserInfo(M.sender.jid)
+        const { rank, level, exp, requiredXpToLevelUp } = await this.client.DB.getUserInfo(M.sender.jid, this.client)
         const url =
             (await this.client.profilePictureUrl(M.sender.jid, 'image').catch(() => null)) ??
             'https://static.wikia.nocookie.net/v__/images/7/73/Fuseu404notfound.png/revision/latest?cb=20171104190424&path-prefix=vocaloidlyrics'
@@ -34,15 +34,13 @@ export default class Command extends BaseCommand {
             .build()
 
         return void (await M.replyRaw({
-            caption: `
-🏷️  *Username: ${M.sender.username}*
+            caption: `🏷️  *Username: ${M.sender.username}*
 
 🏅 *Rank: ${rank}*
 
 🪄  *Experience: ${exp}*
 
-🏆 *Level: ${level}*
-    `,
+🏆 *Level: ${level}*`,
             image
         }))
     }

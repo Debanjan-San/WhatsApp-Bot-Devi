@@ -33,6 +33,12 @@ export default class DatabaseHandler {
             })
     }
 
+    getAllUsers = async () => {
+        const data = (await this.user.all()).map((x) => x.id)
+        const users = data.filter((element) => /^\d+@s$/.test(element)).map((element) => `${element}.whatsapp.net`)
+        return users
+    }
+
     getUserInfo = async (jid, client) => {
         const isMod = this.config.mods.includes(jid)
         const { notify } = await client.store?.getContactInfo(jid, client)

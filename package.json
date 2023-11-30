@@ -60,6 +60,7 @@
       "simple-git": "^3.17.0",
       "unit": "^1.4.3-0",
       "url": "^0.11.3",
+      "wa-sticker-formatter": "^4.4.4",
       "winston": "^3.11.0"
    }
 }
