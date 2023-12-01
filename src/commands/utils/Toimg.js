@@ -1,5 +1,4 @@
 import BaseCommand from '../../libs/BaseCommand.js'
-import { Sticker, StickerTypes } from 'wa-sticker-formatter'
 
 export default class Command extends BaseCommand {
     constructor(client, handler) {
@@ -20,7 +19,7 @@ export default class Command extends BaseCommand {
         if (!media) return void (await M.reply('No sticker found!'))
         const animated = M.quoted?.message.stickerMessage?.isAnimated
         const buffer = await this.client.util.downloadMediaMessage(media)
-        const result = animated ? await this.client.util.webpToMp4(buffer) : await this.client.util.webpToPng(buffer)
+        const result = animated ? await this.client.util.webpToMp4(buffer) : buffer
         await M.reply(result, animated ? 'video' : 'image')
     }
 }
