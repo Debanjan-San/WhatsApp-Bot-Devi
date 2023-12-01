@@ -5,7 +5,7 @@ export default class Command extends BaseCommand {
         super(client, handler, {
             command: 'help',
             aliases: ['menu', 'h'],
-            category: 'Core',
+            category: 'core',
             description: {
                 content: 'Displays the menu',
                 usage: '[command]'
