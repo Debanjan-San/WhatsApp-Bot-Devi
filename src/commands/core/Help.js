@@ -57,7 +57,7 @@ export default class Command extends BaseCommand {
         return void M.reply(`🟥 *Command: ${command.config.command}*
 🟧 *Category: ${command.config.category}*
 🟨 *Aliases: ${command.config?.aliases.join(', ').trim() ?? 'None'}*
-🟩 *PrivateChat: ${!command.config.dm ? 'True' : 'False'}*
+🟩 *PrivateChat: ${command.config.dm ? 'True' : 'False'}*
 🟦 *Admin: ${command.config.adminOnly ? 'True' : 'False'}*
 ⬛ *Status: ${state ? 'Disabled' : 'Available'}*
 🟪 *Usage: ${this.client.config.prefix}${command.config.command} ${command.config.description.usage ?? ''}*
