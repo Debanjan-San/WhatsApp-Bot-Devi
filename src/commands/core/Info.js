@@ -14,9 +14,9 @@ export default class Command extends BaseCommand {
     }
 
     exec = async (M) => {
-        let text = `🎋 *Users: ${(await this.client.DB.getAllUsers()).length}*\n`
-        text += `🎖️ *Groups: ${Object.keys(await this.client.groupFetchAllParticipating()).length}*\n`
-        text += `🌃 *Moderators: ${this.client.config.mods.length}*\n`
+        let text = `🎋 *Users: ${(await this.client.DB.getAllUsers()).length}*\n\n`
+        text += `🎖️ *Groups: ${Object.keys(await this.client.groupFetchAllParticipating()).length}*\n\n`
+        text += `🌃 *Moderators: ${this.client.config.mods.length}*\n\n`
         text += `🌀 *Commands: ${this.handler.commands.size}*`
         await M.reply(text)
     }

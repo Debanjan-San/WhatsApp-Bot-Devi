@@ -34,13 +34,15 @@ export default class Command extends BaseCommand {
             .build()
 
         return void (await M.replyRaw({
-            caption: `🏷️  *Username: ${M.sender.username}*
+            caption: `
+🏷️  *Username: ${M.sender.username}*
 
 🏅 *Rank: ${rank}*
 
 🪄  *Experience: ${exp}*
 
-🏆 *Level: ${level}*`,
+🏆 *Level: ${level}*
+    `,
             image
         }))
     }
