@@ -5,7 +5,7 @@ export default class DatabaseHandler {
     constructor(config, log) {
         this.config = config
         this.log = log
-        const url = this.config.url
+        const url = this.config.mongo
         if (!url) {
             this.log.error('MONGODB_URL is missing, please fill the value!')
             process.exit(1)
