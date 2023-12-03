@@ -14,6 +14,6 @@ export default class Command extends BaseCommand {
     }
 
     exec = async (M) => {
-        await M.reply(`Hi ${M.sender.username}, I am ${this.client.config.name}!`)
+        await M.reply(`👋🏻 Hi ${M.sender.username}, I am ${this.client.config.name}!`)
     }
 }

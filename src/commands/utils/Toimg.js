@@ -16,7 +16,7 @@ export default class Command extends BaseCommand {
 
     exec = async (M) => {
         const media = Object.keys(M.quoted?.message).includes('stickerMessage') ? M.quoted?.message : M.urls[0] ?? null
-        if (!media) return void (await M.reply('No sticker found!'))
+        if (!media) return void (await M.reply('❌ No sticker found!'))
         const animated = M.quoted?.message.stickerMessage?.isAnimated
         const buffer = await this.client.util.downloadMediaMessage(media)
         const result = animated ? await this.client.util.webpToMp4(buffer) : buffer

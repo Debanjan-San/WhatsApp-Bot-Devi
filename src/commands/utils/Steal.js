@@ -18,7 +18,7 @@ export default class Command extends BaseCommand {
 
     exec = async (M, { text }) => {
         const media = Object.keys(M.quoted?.message).includes('stickerMessage') ? M.quoted?.message : M.urls[0] ?? null
-        if (!media) return void (await M.reply('No sticker found!'))
+        if (!media) return void (await M.reply('❌ No sticker found!'))
         const [pack, title] = text.split('|')
         const sticker = await new Sticker(await this.client.util.downloadMediaMessage(media), {
             pack: pack ?? 'Davi Bot',

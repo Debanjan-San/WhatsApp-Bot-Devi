@@ -56,11 +56,6 @@ export const ranks = [
     '♨ Valor Infinty'
 ]
 
-/**
- * @param {number} level
- * @returns {{requiredXpToLevelUp: number, rank: string}}
- */
-
 export const getStats = (level) => {
     let required = 100
     for (let i = 1; i <= level; i++) required += 5 * (i * 50) + 100 * i * (i * (i + 1)) + 300

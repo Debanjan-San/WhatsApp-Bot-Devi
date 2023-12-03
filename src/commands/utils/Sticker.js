@@ -22,7 +22,7 @@ export default class Command extends BaseCommand {
             : M.quoted?.message.videoMessage ?? M.quoted?.message.imageMessage
             ? M.quoted.message
             : M.urls[0] ?? null
-        if (!media) return void (await M.reply('No media found!'))
+        if (!media) return void (await M.reply('❌ No media found!'))
         const [pack, title] = text.split('|')
         const sticker = await new Sticker(
             typeof media === 'string' ? media : await this.client.util.downloadMediaMessage(media),

@@ -29,14 +29,15 @@ export default class Command extends BaseCommand {
                     categories[info.config.category].push(info)
                 }
             }
-            let text = `🎫 *${this.client.config.name} Command List* 🎫\n`
+            let text = `🎫 *${this.client.config.name} Command List* 🎫\n\n`
             const keys = Object.keys(categories)
             for (const key of keys)
-                text += `\n┌ ◦ ${this.emojis[keys.indexOf(key)]} *${key.toUpperCase()}*\n${categories[key]
-                    .map((command) => `_*${this.client.config.prefix}${command.config.command}*_`)
-                    .join('\n')}\n`
+                text += `${this.emojis[keys.indexOf(key)]} *${key.toUpperCase()}*\n❐ \`\`\`${categories[key]
+                    .map((command) => command.config?.command)
+                    .join(', ')}\`\`\`\n\n`
+
             return void M.replyRaw({
-                text: `${text}\n*📗 Note: You can get a brief detail of the command by using _${this.client.config.prefix}help <command name>_*\n\n🔰 *Usage: ${this.client.config.prefix}help anime*`,
+                text: `${text}*📗 Note: You can get a brief detail of the command by using _${this.client.config.prefix}help <command name>_*\n\n🔰 *Usage: ${this.client.config.prefix}help anime*`,
                 contextInfo: {
                     externalAdReply: {
                         title: `${this.client.config.name}'s Commands`,
@@ -54,7 +55,7 @@ export default class Command extends BaseCommand {
         const command = this.handler.commands.get(key) || this.handler.aliases.get(key)
         if (!command) return void M.reply(`No Command of Alias Found | "${key}"`)
         const state = this.client.DB.command.get(command.config.command)
-        return void M.reply(`🟥 *Command: ${command.config.command}*
+        return void M.reply(`❌ Command: ${command.config.command}*
 🟧 *Category: ${command.config.category}*
 🟨 *Aliases: ${command.config?.aliases.join(', ').trim() ?? 'None'}*
 🟩 *PrivateChat: ${command.config.dm ? 'True' : 'False'}*
