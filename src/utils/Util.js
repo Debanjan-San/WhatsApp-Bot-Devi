@@ -2,10 +2,6 @@ import { readdirSync, statSync } from 'fs'
 import { format, promisify } from 'util'
 import { exec } from 'child_process'
 import { join } from 'path'
-import { tmpdir } from 'os'
-import { load } from 'cheerio'
-import { writeFile, readFile, unlink } from 'fs/promises'
-import FormData from 'form-data'
 import DefineMesssage from '../decorators/DefineMesssage.js'
 import { jidDecode, downloadContentFromMessage } from '@iamrony777/baileys'
 import axios from 'axios'
@@ -82,41 +78,6 @@ export default class Utils {
             urls.add(match[1])
         }
         return urls
-    }
-
-    webpToMp4 = async (webp) => {
-        const responseFile = async (form, buffer = '') => {
-            return axios.post(
-                buffer ? `https://ezgif.com/webp-to-mp4/${buffer}` : 'https://ezgif.com/webp-to-mp4',
-                form,
-                {
-                    headers: { 'Content-Type': `multipart/form-data; boundary=${form.getBoundary()}` }
-                }
-            )
-        }
-        return new Promise(async (resolve, reject) => {
-            const form = new FormData()
-            form.append('new-image-url', '')
-            form.append('new-image', webp, { filename: 'blob' })
-            responseFile(form)
-                .then(({ data }) => {
-                    const datafrom = new FormData()
-                    const $ = load(data)
-                    const file = $('input[name="file"]').attr('value')
-                    datafrom.append('file', file)
-                    datafrom.append('convert', 'Convert WebP to MP4!')
-                    responseFile(datafrom, file)
-                        .then(async ({ data }) => {
-                            const $ = load(data)
-                            const result = await this.fetchBuffer(
-                                `https:${$('div#output > p.outfile > video > source').attr('src')}`
-                            )
-                            resolve(result)
-                        })
-                        .catch(reject)
-                })
-                .catch(reject)
-        })
     }
 
     downloadMediaMessage = async (M) => {
