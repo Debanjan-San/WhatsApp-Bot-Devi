@@ -45,7 +45,7 @@ export default class DatabaseHandler {
         const exp = (await this.user.get(`${jid}.exp`)) ?? 0
         const level = (await this.user.get(`${jid}.level`)) ?? 1
         const ban = (await this.user.get(`${jid}.ban`)) ?? false
-        const reason = (await this.user.get(`${jid}.username`)) ?? ''
+        const reason = (await this.user.get(`${jid}.reason`)) ?? ''
         const { requiredXpToLevelUp, rank } = getStats(level)
         return {
             username: notify ?? 'User',
