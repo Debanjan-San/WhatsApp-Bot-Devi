@@ -119,15 +119,6 @@ export default class Utils {
         })
     }
 
-    webpToPng = async (webp) => {
-        const filename = `${tmpdir()}/${Math.random().toString(36)}`
-        await writeFile(`${filename}.webp`, webp)
-        await this.exec(`dwebp "${filename}.webp" -o "${filename}.png"`)
-        const buffer = await readFile(`${filename}.png`)
-        Promise.all([unlink(`${filename}.png`), unlink(`${filename}.webp`)])
-        return buffer
-    }
-
     downloadMediaMessage = async (M) => {
         let msg
         let type
