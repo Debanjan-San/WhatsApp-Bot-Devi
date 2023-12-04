@@ -1,5 +1,7 @@
 import { makeWASocket, makeMongoStore, DisconnectReason } from '@iamrony777/baileys'
 import { Boom } from '@hapi/boom'
+import Server from './Server.js'
+import { imageSync } from 'qr-image'
 import Utils from '../utils/Util.js'
 import Message from '../decorators/DefineMesssage.js'
 import Participant from '../handler/Participants.js'
@@ -19,6 +21,7 @@ export default class Devi {
 
     connect = async () => {
         const socket = makeWASocket(this.options)
+        const server = new Server(this.config, this.log)
         const store = makeMongoStore({
             filterChats: true,
             db: this.mongo.db('session'),
@@ -27,7 +30,10 @@ export default class Devi {
         socket.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect, qr } = update
             const { statusCode } = new Boom(lastDisconnect?.error).output
-            if (qr) this.log.notice('Qr has been generated!!')
+            if (qr) {
+                server.qr = imageSync(qr)
+                this.log.notice('Qr has been generated!!')
+            }
             if (connection === 'close') {
                 if (statusCode !== DisconnectReason.loggedOut) setTimeout(() => this.connect(), 3000)
                 else {
@@ -38,6 +44,7 @@ export default class Devi {
             }
             if (connection === 'connecting') this.log.info('Connecting to the phone!')
             if (connection === 'open') {
+                server.connection = connection
                 this.log.info('Connected to the phone >.<!')
                 Object.assign(socket, { config: this.config, util: new Utils(), log: this.log, DB: this.DB, store })
                 this.render = new this.MessageHandler(socket)
