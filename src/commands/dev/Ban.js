@@ -17,9 +17,10 @@ export default class Command extends BaseCommand {
     exec = async (M, { flags, text }) => {
         if (M.quoted?.sender) M.mentioned.push(M.quoted.sender.jid)
         const keys = Object.keys(flags)
-        if (!M.mentioned.length) return void (await M.reply('❌*Mention is required to Ban'))
+        if (!M.mentioned.length) return void (await M.reply('❌ Mention is required to Ban'))
         if (!keys.length) return void (await M.reply('❌ Sorry you are using a wrong format!'))
         const { ban, jid } = await this.client.DB.getUserInfo(M.mentioned[0])
+        if (keys[0] !== 'ban') return void (await M.reply('❌ Invalid value'))
         if (flags[keys[0]].toLowerCase() == 'true' && ban) return void (await M.reply('🟨 User is banned already!'))
         if (flags[keys[0]].toLowerCase() == 'false' && !ban) return void (await M.reply('🟨 User is unbanned already!'))
         if (!['true', 'false'].includes(flags[keys[0]].toLowerCase())) return void (await M.reply('❌ Invalid value'))
