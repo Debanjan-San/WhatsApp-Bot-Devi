@@ -58,14 +58,14 @@ export default class Command extends BaseCommand {
             isDisabled: false,
             reason: ''
         }
-        return void (await M.reply(`🟥 Command: ${command.config.command}*
-        🟧 *Category: ${command.config.category}*
-        🟨 *Aliases: ${command.config?.aliases.join(', ').trim() ?? 'None'}*
-        🟩 *PrivateChat: ${command.config.dm ? 'True' : 'False'}*
-        🟦 *Admin: ${command.config.adminOnly ? 'True' : 'False'}*
-        ⬛ *Status: ${cmdStatus.isDisabled}* - ${cmdStatus.reason}
-        🟪 *Usage: ${this.client.config.prefix}${command.config.command} ${command.config.description.usage ?? ''}*
-        ⬜ *Description: ${command.config.description?.content}*`))
+        return void (await M.reply(`🟥 *Command: ${command.config.command}*
+🟧 *Category: ${command.config.category}*
+🟨 *Aliases: ${command.config?.aliases.join(', ').trim() ?? 'None'}*
+🟩 *PrivateChat: ${command.config.dm ? 'True' : 'False'}*
+🟦 *Admin: ${command.config.adminOnly ? 'True' : 'False'}*
+⬛ *Status: ${cmdStatus.isDisabled}* - ${cmdStatus.reason}
+🟪 *Usage: ${this.client.config.prefix}${command.config.command} ${command.config.description.usage ?? ''}*
+⬜ *Description: ${command.config.description?.content}*`))
     }
 
     emojis = ['🌀', '🎴', '🔮', '👑', '🎈', '⚙️', '🍀']
