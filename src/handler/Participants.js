@@ -6,8 +6,8 @@ export default class Participant {
 
     participantUpdate = async (event) => {
         const { participants, id, action } = event
-        const { isEventsActive } = await new DefineGroup(id, this.client).build()
-        if (!isEventsActive) return
+        const { toggled } = await new DefineGroup(id, this.client).build()
+        if (!toggled.events) return
         for (const participant of participants) {
             const caption = this.events[action]
             const text = caption[Math.floor(Math.random() * caption.length)]

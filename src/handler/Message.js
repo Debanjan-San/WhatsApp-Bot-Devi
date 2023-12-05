@@ -65,7 +65,7 @@ export default class MessageHandler {
     }
 
     moderate = async (M) => {
-        if (!M.group.isModActive) return
+        if (!M.group.toggled.mods) return
         if (M.chat === 'dm') return
         if (!M.group?.admins.includes(this.client.util.sanitizeJid(this.client.user?.id ?? ''))) return
         if (M.isAdminMessage) return
