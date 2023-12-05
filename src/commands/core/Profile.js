@@ -20,7 +20,7 @@ export default class Command extends BaseCommand {
         } catch (error) {
             bio = ''
         }
-        const { rank, level, exp, ban } = await this.client.DB.getUserInfo(M.sender.jid, this.client)
+        const { rank, level, exp, status } = await this.client.DB.getUserInfo(M.sender.jid)
         const url =
             (await this.client.profilePictureUrl(M.sender.jid, 'image').catch(() => null)) ??
             'https://static.wikia.nocookie.net/v__/images/7/73/Fuseu404notfound.png/revision/latest?cb=20171104190424&path-prefix=vocaloidlyrics'
@@ -38,7 +38,7 @@ export default class Command extends BaseCommand {
 
 👑 *Admin: _${M.group?.admins.includes(M.sender.jid) ? 'Yes' : 'Not'}_ of ${M.group?.title}*
 
-🟥 *Ban: ${ban}*
+🟥 *Ban: ${status.isBan}*
     `,
             image: {
                 url

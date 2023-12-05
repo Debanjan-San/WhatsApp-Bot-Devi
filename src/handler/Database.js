@@ -44,8 +44,7 @@ export default class DatabaseHandler {
         const { notify } = await client.store?.getContactInfo(jid, client)
         const exp = (await this.user.get(`${jid}.exp`)) ?? 0
         const level = (await this.user.get(`${jid}.level`)) ?? 1
-        const ban = (await this.user.get(`${jid}.ban`)) ?? false
-        const reason = (await this.user.get(`${jid}.reason`)) ?? ''
+        const status = (await this.user.get(`${jid}.status`)) ?? { isBan: false, reason: '' }
         const { requiredXpToLevelUp, rank } = getStats(level)
         return {
             username: notify ?? 'User',
@@ -53,8 +52,7 @@ export default class DatabaseHandler {
             isMod,
             exp,
             level,
-            ban,
-            reason,
+            status,
             requiredXpToLevelUp,
             rank
         }

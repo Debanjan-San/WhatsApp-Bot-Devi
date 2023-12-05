@@ -7,7 +7,7 @@ export default class Command extends BaseCommand {
             category: 'dev',
             description: {
                 content: 'Bans Users',
-                usage: '--ban=true [quote] || --ban=false @user'
+                usage: '--status=true [quote] [reason] || --status=false @user [reason]'
             },
             modsOnly: true,
             exp: 1
@@ -19,26 +19,23 @@ export default class Command extends BaseCommand {
         const keys = Object.keys(flags)
         if (!M.mentioned.length) return void (await M.reply('❌ Mention is required to Ban'))
         if (!keys.length) return void (await M.reply('❌ Sorry you are using a wrong format!'))
-        const { ban, jid } = await this.client.DB.getUserInfo(M.mentioned[0])
-        if (keys[0] !== 'ban') return void (await M.reply('❌ Invalid value'))
-        if (flags[keys[0]].toLowerCase() == 'true' && ban) return void (await M.reply('🟨 User is banned already!'))
-        if (flags[keys[0]].toLowerCase() == 'false' && !ban) return void (await M.reply('🟨 User is unbanned already!'))
+        const { status, jid } = await this.client.DB.getUserInfo(M.mentioned[0])
+        if (keys[0] !== 'status') return void (await M.reply('❌ Invalid value'))
+        if (flags[keys[0]].toLowerCase() == 'true' && status.isBan)
+            return void (await M.reply('🟨 User is banned already!'))
+        if (flags[keys[0]].toLowerCase() == 'false' && !status.isBan)
+            return void (await M.reply('🟨 User is unbanned already!'))
         if (!['true', 'false'].includes(flags[keys[0]].toLowerCase())) return void (await M.reply('❌ Invalid value'))
         const reason = text
             .split(' ')
-            .filter((word) => word !== M.mentioned[0])
-            .filter((word) => !['--ban=true', '--ban=false'].includes(word))
+            .filter((word) => word !== `@${M.mentioned[0].split('@')[0]}`)
+            .filter((word) => !['--status=true', '--status=false'].includes(word))
             .join(' ')
-        await Promise.all([
-            await this.client.DB.user.set(
-                `${M.mentioned[0]}.ban`,
-                flags[keys[0]].toLowerCase() == 'false' ? false : true
-            ),
-            await this.client.DB.user.set(
-                `${M.mentioned[0]}.reason`,
-                flags[keys[0]].toLowerCase() == 'false' ? '' : reason
-            )
-        ])
+
+        await this.client.DB.user.set(`${M.mentioned[0]}.status`, {
+            isBan: flags[keys[0]].toLowerCase() == 'false' ? false : true,
+            reason
+        })
 
         return void (await M.reply(
             `@${jid.split('@')[0]} has been banned ${flags[keys[0]].toLowerCase() == 'true' ? 'true 🟥' : 'false 🟩'}`,

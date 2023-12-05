@@ -22,9 +22,14 @@ export default class MessageHandler {
         const user = await this.client.DB.getUserInfo(M.sender.jid, this.client)
         this.client.log.notice(`(CMD): ${cmd} from ${M.sender.username ?? ''} in ${M.group?.title || 'Direct Message'}`)
         if (!command) return void M.reply('💔 No Command Found! Try using one from the help list')
-        const state = this.client.DB.command.get(command.config?.command)
-        if (state.isDisabled) return void M.reply(`This command has been disabled!\nReason: ${state.reason}`)
-        if (user.ban) return void M.reply(`🚷 You\'re Banned from using commands\n📮 *Resason:* ${user.reason}`)
+        const cmdStatus = (await this.client.DB.command.get(command.config?.command)) ?? {
+            isDisabled: false,
+            reason: ''
+        }
+        if (cmdStatus.isDisabled)
+            return void M.reply(`🏮 This command has been disabled!\n📮 *Resason:* ${cmdStatus.reason}`)
+        if (user.status.isBan)
+            return void M.reply(`🚷 You\'re Banned from using commands\n📮 *Resason:* ${user.status.reason}`)
         if (!command.config?.dm && M.chat === 'dm') return void M.reply('💬 This command can only be used in groups')
         if (command.config?.modsOnly && !user.isMod) return void M.reply('👤 Only Mods are allowed to use this command')
         if (M.chat === 'group' && command.config?.adminOnly && !M.isAdminMessage)
