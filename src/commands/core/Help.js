@@ -53,16 +53,19 @@ export default class Command extends BaseCommand {
         }
         const key = parsedArgs.text.toLowerCase()
         const command = this.handler.commands.get(key) || this.handler.aliases.get(key)
-        if (!command) return void M.reply(`No Command of Alias Found | "${key}"`)
-        const state = this.client.DB.command.get(command.config.command)
-        return void M.reply(`❌ Command: ${command.config.command}*
-🟧 *Category: ${command.config.category}*
-🟨 *Aliases: ${command.config?.aliases.join(', ').trim() ?? 'None'}*
-🟩 *PrivateChat: ${command.config.dm ? 'True' : 'False'}*
-🟦 *Admin: ${command.config.adminOnly ? 'True' : 'False'}*
-⬛ *Status: ${state ? 'Disabled' : 'Available'}*
-🟪 *Usage: ${this.client.config.prefix}${command.config.command} ${command.config.description.usage ?? ''}*
-⬜ *Description: ${command.config.description?.content}*`)
+        if (!command) return void (await M.reply(`❌ No Command of Alias Found *"${key}"*`))
+        const cmdStatus = (await this.client.DB.command.get(command.config?.command)) ?? {
+            isDisabled: false,
+            reason: ''
+        }
+        return void (await M.reply(`🟥 Command: ${command.config.command}*
+        🟧 *Category: ${command.config.category}*
+        🟨 *Aliases: ${command.config?.aliases.join(', ').trim() ?? 'None'}*
+        🟩 *PrivateChat: ${command.config.dm ? 'True' : 'False'}*
+        🟦 *Admin: ${command.config.adminOnly ? 'True' : 'False'}*
+        ⬛ *Status: ${cmdStatus.isDisabled}* - ${cmdStatus.reason}
+        🟪 *Usage: ${this.client.config.prefix}${command.config.command} ${command.config.description.usage ?? ''}*
+        ⬜ *Description: ${command.config.description?.content}*`))
     }
 
     emojis = ['🌀', '🎴', '🔮', '👑', '🎈', '⚙️', '🍀']
