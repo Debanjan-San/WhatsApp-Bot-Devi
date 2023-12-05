@@ -10,9 +10,9 @@ export default class MessageHandler {
     }
 
     handler = async (M) => {
-        this.moderate(M)
         const context = this.parseArgs(M.content)
         const isCommand = M.content.startsWith(this.client.config.prefix)
+        if (M.chat === 'group') this.moderate(M)
         if (!isCommand)
             return void this.client.log.notice(
                 `(MSG): from ${M.sender.username ?? ''}  in ${M.group?.title || 'Direct Message'}`
