@@ -30,10 +30,15 @@ export default class MessageHandler {
             return void (await M.reply(`🏮 This command has been disabled!\n📮 *Resason:* ${cmdStatus.reason}`))
         if (user.status.isBan)
             return void (await M.reply(`🚷 You\'re Banned from using commands\n📮 *Resason:* ${user.status.reason}`))
-        if (!command.config?.dm && M.chat === 'dm') return void (await M.reply('💬 This command can only be used in groups'))
-        if (command.config?.modsOnly && !user.isMod) return void (await M.reply('👤 Only Mods are allowed to use this command'))
-        if (command.config?.perms && M.group?.admins.includes(this.client.util.sanitizeJid(this.client.user?.id ?? '')))
-        return void (await M.reply('💔 Missing admin permission. Try promoting me to admin and try again'))
+        if (!command.config?.dm && M.chat === 'dm')
+            return void (await M.reply('💬 This command can only be used in groups'))
+        if (command.config?.modsOnly && !user.isMod)
+            return void (await M.reply('👤 Only Mods are allowed to use this command'))
+        if (
+            command.config?.perms &&
+            !M.group?.admins.includes(this.client.util.sanitizeJid(this.client.user?.id ?? ''))
+        )
+            return void (await M.reply('💔 Missing admin permission. Try promoting me to admin and try again'))
         if (M.chat === 'group' && command.config?.adminOnly && !M.isAdminMessage)
             return void (await M.reply(`🔑 Only admins are allowed to use this command`))
         try {
