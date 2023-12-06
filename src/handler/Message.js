@@ -85,7 +85,7 @@ export default class MessageHandler {
                     const code = await this.client.groupInviteCode(M.from)
                     const inviteSplit = invite.split('/')
                     if (inviteSplit[inviteSplit.length - 1] !== code) {
-                        await M.reply('Take care intruder and get some help!!')
+                        await M.reply('💥 Take care intruder and get some help!!')
                         await this.client.sendMessage(M.from, { delete: M.key })
                         return void (await this.client.groupParticipantsUpdate(M.from, [M.sender.jid], 'remove'))
                     }
