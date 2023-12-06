@@ -17,11 +17,11 @@ export default class Devi {
         this.mongo = mongo
         this.authSession = authSession
         this.options = options
+        this.server = new Server(config, log)
     }
 
     connect = async () => {
         const socket = makeWASocket(this.options)
-        const server = new Server(this.config, this.log)
         const store = makeMongoStore({
             filterChats: true,
             db: this.mongo.db('session'),
@@ -31,7 +31,7 @@ export default class Devi {
             const { connection, lastDisconnect, qr } = update
             const { statusCode } = new Boom(lastDisconnect?.error).output
             if (qr) {
-                server.qr = imageSync(qr)
+                this.server.qr = imageSync(qr)
                 this.log.notice('Qr has been generated!!')
             }
             if (connection === 'close') {
@@ -44,7 +44,7 @@ export default class Devi {
             }
             if (connection === 'connecting') this.log.info('Connecting to the phone!')
             if (connection === 'open') {
-                server.connection = connection
+                this.server.connection = connection
                 this.log.info('Connected to the phone >.<!')
                 Object.assign(socket, { config: this.config, util: new Utils(), log: this.log, DB: this.DB, store })
                 this.render = new this.MessageHandler(socket)
