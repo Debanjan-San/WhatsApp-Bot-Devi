@@ -8,9 +8,9 @@ export default class YT {
     id
 
     constructor(url, type) {
-        this.id = this.parseId()
         this.url = url
         this.type = type
+        this.id = this.parseId()
     }
 
     validateURL = () => validateURL(this.url)
