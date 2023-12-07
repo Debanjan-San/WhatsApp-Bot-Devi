@@ -1,6 +1,7 @@
 import { createWriteStream, promises } from 'fs'
 import { tmpdir } from 'os'
-import ytdl, { validateURL } from 'ytdl-core'
+import ytdl from 'ytdl-core'
+const { validateURL } = ytdl
 const { readFile } = promises
 
 export default class YT {

@@ -1,6 +1,7 @@
 import { join } from 'path'
 import { URL } from 'url'
 import canvafy from 'canvafy'
+import axios from 'axios'
 export default class MessageHandler {
     commands = new Map()
     aliases = new Map()
@@ -11,12 +12,14 @@ export default class MessageHandler {
 
     handler = async (M) => {
         const context = this.parseArgs(M.content)
+        this.moderate(M)
         const isCommand = M.content.startsWith(this.client.config.prefix)
-        if (M.chat === 'group') this.moderate(M)
-        if (!isCommand)
+        if (!isCommand) {
+            this.chatBot(M)
             return void this.client.log.notice(
                 `(MSG): from ${M.sender.username ?? ''}  in ${M.group?.title || 'Direct Message'}`
             )
+        }
         const { cmd } = context
         const command = this.commands.get(cmd) || this.aliases.get(cmd)
         const user = await this.client.DB.getUserInfo(M.sender.jid, this.client)
@@ -69,6 +72,15 @@ export default class MessageHandler {
         } catch (err) {
             return void this.client.log.error(err.message)
         }
+    }
+
+    chatBot = async (M) => {
+        if (M.chat === 'dm') return
+        if (!M.group.toggled.chatbot) return
+        if (M.quoted?.sender) M.mentioned.push(M.quoted.sender)
+        if (!M.mentioned.includes(this.client.util.sanitizeJid(this.client.user?.id ?? ''))) return
+        const { data } = await axios.post('https://bard.rizzy.eu.org/backend/conversation', { ask: M.content })
+        return void (await this.client.sendMessage(M.from, { text: data.content, mentions: M.mentioned }))
     }
 
     moderate = async (M) => {

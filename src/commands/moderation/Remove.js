@@ -16,7 +16,7 @@ export default class Command extends BaseCommand {
     }
 
     exec = async (M) => {
-        if (M.quoted?.sender) M.mentioned.push(M.quoted.sender.jid)
+        if (M.quoted?.sender) M.mentioned.push(M.quoted.sender)
         if (!M.mentioned.length) return void (await M.reply(`❌ Mentions are required to remove`))
         if (M.mentioned.length > 5)
             return void (await M.reply(
