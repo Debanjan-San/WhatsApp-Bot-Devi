@@ -22,7 +22,7 @@ export default class Command extends BaseCommand {
             return void (await M.reply(
                 `❌ You can only demote up to 5 users at a time, Remove some users and try again`
             ))
-        let text = `🎖️ Demoting Users...\n`
+        let text = '🎖️ Demoting Users...\n'
         for (const jid of M.mentioned) {
             const number = jid.split('@')[0]
             if (!M.group?.admins?.includes(jid)) text += `\n〽️ *@${number}* is already a not admin`

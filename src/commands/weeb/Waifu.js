@@ -6,7 +6,7 @@ export default class Command extends BaseCommand {
             command: 'waifu',
             category: 'weeb',
             description: {
-                content: 'Sends a random waifu image.'
+                content: 'Sends a random waifu image'
             },
             dm: true,
             exp: 9

@@ -6,7 +6,7 @@ export default class Command extends BaseCommand {
             command: 'leave',
             category: 'dev',
             description: {
-                content: 'For Super Users.'
+                content: 'For Super Users'
             },
             modsOnly: true,
             exp: 1

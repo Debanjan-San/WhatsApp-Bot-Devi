@@ -7,7 +7,7 @@ export default class Command extends BaseCommand {
             category: 'dev',
             aliases: ['run'],
             description: {
-                content: 'For Super Users.',
+                content: 'For Super Users',
                 usage: '[codes]'
             },
             modsOnly: true,

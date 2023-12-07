@@ -7,7 +7,7 @@ export default class Command extends BaseCommand {
             aliases: ['ani'],
             category: 'weeb',
             description: {
-                content: 'Searches an anime of the given query.',
+                content: 'Searches an anime of the given query',
                 usage: '[name]'
             },
             dm: true,

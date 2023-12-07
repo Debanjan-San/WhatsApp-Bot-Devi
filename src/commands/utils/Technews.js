@@ -8,7 +8,7 @@ export default class Command extends BaseCommand {
             aliases: ['tn'],
             category: 'utils',
             description: {
-                content: 'Gives you tech related news.'
+                content: 'Gives you tech related news'
             },
             dm: true,
             exp: 5
@@ -17,10 +17,10 @@ export default class Command extends BaseCommand {
 
     exec = async (M) => {
         const { inshorts } = await this.client.util.fetch('https://pvx-api-vercel.vercel.app/api/news')
-        let msg = '☆☆💥 *TECH NEWS* 💥☆☆'
+        let msg = '   💥 *TECH NEWS* 💥   '
         for (let i = 0; i < inshorts.length; ++i) {
             msg += `\n\n*${1 + i}#*\n${inshorts[i]}`
         }
-        return void M.reply(msg)
+        await M.reply(msg)
     }
 }

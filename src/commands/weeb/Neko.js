@@ -6,7 +6,7 @@ export default class Command extends BaseCommand {
             command: 'neko',
             category: 'weeb',
             description: {
-                content: 'Sends a random neko image.'
+                content: 'Sends a random neko image'
             },
             dm: true,
             exp: 9

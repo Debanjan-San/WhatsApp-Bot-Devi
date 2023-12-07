@@ -7,7 +7,7 @@ export default class Command extends BaseCommand {
             aliases: ['chara'],
             category: 'weeb',
             description: {
-                content: 'Searches a character of the given query.',
+                content: 'Searches a character of the given query',
                 usage: '[name]'
             },
             dm: true,

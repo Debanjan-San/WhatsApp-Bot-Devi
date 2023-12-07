@@ -6,7 +6,7 @@ export default class Command extends BaseCommand {
             command: 'maid',
             category: 'weeb',
             description: {
-                content: 'Sends a random maid image.'
+                content: 'Sends a random maid image'
             },
             dm: true,
             exp: 9

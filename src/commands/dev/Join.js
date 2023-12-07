@@ -6,7 +6,7 @@ export default class Command extends BaseCommand {
             command: 'join',
             category: 'dev',
             description: {
-                content: 'For Super Users.'
+                content: 'For Super Users'
             },
             modsOnly: true,
             dm: true,

@@ -45,6 +45,7 @@
       "format-duration": "^3.0.2",
       "fs-extra": "^11.1.0",
       "human-readable": "^0.2.1",
+      "imgbb-uploader": "^1.5.1",
       "linkifyjs": "^4.1.1",
       "mindee": "^4.0.1",
       "module": "^1.2.5",
@@ -63,6 +64,7 @@
       "unit": "^1.4.3-0",
       "url": "^0.11.3",
       "wa-sticker-formatter": "^4.4.4",
-      "winston": "^3.11.0"
+      "winston": "^3.11.0",
+      "ytdl-core": "^4.11.5"
    }
 }
