@@ -5,6 +5,7 @@ const getConfig = () => {
         session: process.env.SESSION || 'session',
         prefix: process.env.PREFIX || '#',
         port: process.env.PORT || 3000,
+        imgbb: process.env.IMGBB || null,
         mongo:
             process.env.MONGO || 'mongodb+srv://cara:das1234@cluster0.d2czz.mongodb.net/?retryWrites=true&w=majority',
         mods: process.env.MODS
