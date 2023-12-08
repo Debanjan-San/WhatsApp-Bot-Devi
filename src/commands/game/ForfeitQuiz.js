@@ -9,7 +9,6 @@ export default class Command extends BaseCommand {
             description: {
                 content: 'Forfeits the ongoing quiz'
             },
-            dm: true,
             exp: 2
         })
     }

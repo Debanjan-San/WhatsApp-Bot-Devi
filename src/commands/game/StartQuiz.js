@@ -10,7 +10,6 @@ export default class Command extends BaseCommand {
                 content: 'Starts quiz',
                 usage: '[number]'
             },
-            dm: true,
             exp: 9
         })
     }
