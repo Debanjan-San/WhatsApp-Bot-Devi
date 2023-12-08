@@ -1,5 +1,6 @@
 import { join } from 'path'
 import { URL } from 'url'
+import { Quiz } from 'anime-quiz'
 import canvafy from 'canvafy'
 import axios from 'axios'
 export default class MessageHandler {

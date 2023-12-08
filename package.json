@@ -28,6 +28,7 @@
       "@hapi/boom": "^10.0.1",
       "@iamrony777/baileys": "^6.5.0-7",
       "@whiskeysockets/baileys": "^6.4.1",
+      "anime-quiz": "^3.0.0",
       "axios": "^1.5.1",
       "better-sqlite3": "^9.1.1",
       "bluebird": "^3.7.2",
