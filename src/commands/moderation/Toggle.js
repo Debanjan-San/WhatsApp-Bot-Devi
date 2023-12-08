@@ -18,15 +18,14 @@ export default class Command extends BaseCommand {
         const keys = Object.keys(flags)
         if (!keys.length) {
             return void (await M.reply(
-                stripIndents`
-                🔧 *Toggle Settings*
+                `🔧 *Toggle Settings*
 
                 ${this.settings
                     .map(
                         ({ name, description }) =>
-                            `🟢 *${name}* - ${description}\n\nTo turn on *${this.client.config.prefix}toggle --${name}=true*\nTo turn off *${this.client.config.prefix}toggle --${name}=false*`
+                            `🟢 *${name}* - ${description}\nTo turn on *${this.client.config.prefix}toggle --${name}=true*\nTo turn off *${this.client.config.prefix}toggle --${name}=false*`
                     )
-                    .join('\n')}
+                    .join('\n\n')}
                 `
             ))
         }
