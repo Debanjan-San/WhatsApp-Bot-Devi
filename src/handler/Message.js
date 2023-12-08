@@ -91,7 +91,6 @@ export default class MessageHandler {
         this.count.set(jid, times - 1)
         this.tried.delete(jid)
         this.startQuiz(jid)
-        console.log(answer)
         await this.client.sendMessage(jid, {
             text: `📬 *${question}*\n\n${options
                 .map((ans, i) => `${emojis[i]} *${ans}*`)
