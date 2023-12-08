@@ -5,6 +5,9 @@ import axios from 'axios'
 export default class MessageHandler {
     commands = new Map()
     aliases = new Map()
+    count = new Map()
+    tried = new Map()
+    quiz = new Map()
 
     constructor(client) {
         this.client = client
@@ -72,6 +75,35 @@ export default class MessageHandler {
         } catch (err) {
             return void this.client.log.error(err.message)
         }
+    }
+
+    getQuiz = async (jid) => {
+        const emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣']
+        const times = this.count.get(jid)
+        if (times == 0) return
+        const { getRandom } = new Quiz()
+        const { question, options, answer } = getRandom()
+        this.quiz.set(jid, {
+            options,
+            answer
+        })
+        this.count.set(jid, times - 1)
+        this.tried.delete(jid)
+        this.startQuiz(jid)
+        console.log(answer)
+        await this.client.sendMessage(jid, {
+            text: `📬 *${question}*\n\n${options
+                .map((ans, i) => `${emojis[i]} *${ans}*`)
+                .join('\n')}\n\n🪧 *Note:* Use _*${
+                this.client.config.prefix
+            }answer <index>*_ to anser the quiz\n💬 *Example:* ${this.client.config.prefix}answer 1`
+        })
+    }
+
+    startQuiz = async (jid) => {
+        setTimeout(async () => {
+            this.getQuiz(jid)
+        }, 60000)
     }
 
     chatBot = async (M) => {
