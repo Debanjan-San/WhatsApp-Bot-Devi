@@ -1,2 +1,2 @@
 language="nodejs"
-run="npm start"
+run="pm2 start src/index.js && pm2 logs"
