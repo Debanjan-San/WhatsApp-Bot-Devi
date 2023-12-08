@@ -37,7 +37,7 @@ export default class Command extends BaseCommand {
                     .join(', ')}\`\`\`\n\n`
 
             return void M.replyRaw({
-                text: `${text}*📗 Note: You can get a brief detail of the command by using _${this.client.config.prefix}help <command name>_*\n\n🔰 *Usage: ${this.client.config.prefix}help anime*`,
+                text: `${text}*📗 Note: You can get a brief detail of the command by using _${this.client.config.prefix}help <command name>_*\n🔰 *Usage: ${this.client.config.prefix}help anime*`,
                 contextInfo: {
                     externalAdReply: {
                         title: `${this.client.config.name}'s Commands`,
