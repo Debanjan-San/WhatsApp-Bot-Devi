@@ -19,10 +19,7 @@ export default class Command extends BaseCommand {
         if (!text) return void (await M.reply('❌ Sorry you did not give any query!'))
         let safe = false
         const { nsfw } = (await this.client.DB.group.get(M.from)) ?? {
-            mods: false,
-            events: false,
-            nsfw: false,
-            chatbot: false
+            nsfw: false
         }
         if (!nsfw) safe = true
         const options = {
