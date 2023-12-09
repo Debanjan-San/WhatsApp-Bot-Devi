@@ -68,5 +68,5 @@ export default class Command extends BaseCommand {
 ⬜ *Description: ${command.config.description?.content}*`))
     }
 
-    emojis = ['🌀', '🎴', '🔮', '👑', '🎈', '⚙️', '🍀']
+    emojis = ['🌀', '🎴', '🔮', '👑', '🎈', '⚙️', '🍀', '💈', '🔰']
 }

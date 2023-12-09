@@ -68,10 +68,10 @@ export default class MessageHandler {
                     .setLevels(user.level, user.level + 1)
                     .build()
                 await this.client.DB.user.add(`${M.sender.jid}.level`, 1)
-                await M.replyRaw({
+                return void (await M.replyRaw({
                     caption: `🎆 ${M.sender.username} has leveled up to ${user.level + 1} from ${user.level}`,
                     image
-                })
+                }))
             }
         } catch (err) {
             return void this.client.log.error(err.message)
