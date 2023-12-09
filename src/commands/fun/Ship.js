@@ -15,7 +15,7 @@ export default class Command extends BaseCommand {
     }
 
     exec = async (M) => {
-        if (M.quoted?.sender) M.mentioned.push(M.quoted.sender.jid)
+        if (M.quoted?.sender) M.mentioned.push(M.quoted.sender)
         while (M.mentioned.length < 2) M.mentioned.unshift(M.sender.jid)
         if (M.mentioned.includes(this.client.user.id)) return void (await M.reply("❌ You can't ship the bot"))
         const users = await Promise.all(
