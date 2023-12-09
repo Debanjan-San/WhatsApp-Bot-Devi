@@ -32,10 +32,12 @@ export default class Command extends BaseCommand {
         const shortedParticipants = participants.sort((a, b) => b.exp - a.exp)
         let text = ''
         shortedParticipants.slice(0, 10).map((participant, i) => {
-            text += `*${i + 1}. ${participant.username}*\n🌟 *Exp:* ${participant.exp}\n🏅 *Level:* ${
+            text += `${this.emojis[i]} *${participant.username}*\n🌟 *Exp:* ${participant.exp}\n🏅 *Level:* ${
                 participant.level
             }\n\n`
         })
         return void (await M.reply(text))
     }
+    
+    emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
 }
