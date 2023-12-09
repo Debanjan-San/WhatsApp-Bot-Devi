@@ -18,6 +18,6 @@ export default class Command extends BaseCommand {
         if (count == 0) return void (await M.reply('❌ There is no quiz going on'))
         this.handler.count.set(M.from, 0)
         this.handler.quiz.delete(M.from)
-        await M.reply('✔️ The quiz has been deleted')
+        return void (await M.reply('✔️ The quiz has been deleted'))
     }
 }

@@ -18,10 +18,10 @@ export default class Command extends BaseCommand {
     exec = async (M) => {
         if (!M.group.metadata.announce) await this.client.groupSettingUpdate(M.from, 'announcement')
         if (M.group.metadata.announce) await this.client.groupSettingUpdate(M.from, 'not_announcement')
-        await M.reply(
+        return void (await M.reply(
             ` ${M.group.metadata.announce ? '🔇 Not_announcement' : '🔊 Announcement'} mode has been toggled in ${
                 M.group.title
             } `
-        )
+        ))
     }
 }

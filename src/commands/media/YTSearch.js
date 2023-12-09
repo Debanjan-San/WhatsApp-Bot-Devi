@@ -28,6 +28,6 @@ export default class Command extends BaseCommand {
             }*\n📙 *Duration: ${timestamp}s*\n🔗 *URL: ${url}*\n\n`
         })
 
-        await M.reply(msg)
+        return void (await M.reply(msg))
     }
 }

@@ -21,6 +21,6 @@ export default class Command extends BaseCommand {
         for (let i = 0; i < inshorts.length; ++i) {
             msg += `\n\n*${1 + i}#*\n${inshorts[i]}`
         }
-        await M.reply(msg)
+        return void (await M.reply(msg))
     }
 }

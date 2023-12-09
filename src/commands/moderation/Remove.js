@@ -32,6 +32,6 @@ export default class Command extends BaseCommand {
                 text += `\n✔️ Removed *@${number}*`
             }
         }
-        await M.reply(text, undefined, undefined, undefined, M.mentioned)
+        return void (await M.reply(text, undefined, undefined, undefined, M.mentioned))
     }
 }

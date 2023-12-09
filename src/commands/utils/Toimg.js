@@ -19,6 +19,6 @@ export default class Command extends BaseCommand {
         if (!media) return void (await M.reply('❌ No sticker found!'))
         if (M.quoted?.message.stickerMessage?.isAnimated)
             return void (await M.reply('❌ Animated sticker is not supported!'))
-        await M.reply(await this.client.util.downloadMediaMessage(media), 'image')
+        return void (await M.reply(await this.client.util.downloadMediaMessage(media), 'image'))
     }
 }

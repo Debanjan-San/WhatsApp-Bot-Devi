@@ -22,6 +22,6 @@ export default class Command extends BaseCommand {
         if (!image) return void (await M.reply('❌ No image found!'))
         const base64 = await this.client.util.bufferToBase64(await this.client.util.downloadMediaMessage(image))
         const icon = await getDisplayUrl(base64, this.client.config.imgbb, M.sender.username)
-        await M.reply(icon)
+        return void (await M.reply(icon))
     }
 }

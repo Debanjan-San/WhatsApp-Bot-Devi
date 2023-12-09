@@ -15,12 +15,12 @@ export default class Command extends BaseCommand {
 
     exec = async (M) => {
         const { mods } = this.client.config
-        await M.reply(
+        return void (await M.reply(
             [`🌃 *_MODERATORS_* 🌃 `, '\n', mods.map((x) => '@'.concat(x.split('@')[0])).join('\n')].join('\n'),
             'text',
             undefined,
             undefined,
             mods
-        )
+        ))
     }
 }

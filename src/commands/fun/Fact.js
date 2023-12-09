@@ -3,17 +3,18 @@ import BaseCommand from '../../libs/BaseCommand.js'
 export default class Command extends BaseCommand {
     constructor(client, handler) {
         super(client, handler, {
-            command: 'hi',
-            category: 'core',
+            command: 'fact',
+            category: 'fun',
             description: {
-                content: 'Say hello to the bot.'
+                content: 'Sends random fact'
             },
             dm: true,
-            exp: 1
+            exp: 3
         })
     }
 
     exec = async (M) => {
-        return void (await M.reply(`👋🏻 Hi ${M.sender.username}, I am ${this.client.config.name}!`))
+        const { fact } = await this.client.util.fetch('https://nekos.life/api/v2/fact')
+        return void (await M.reply(fact))
     }
 }
