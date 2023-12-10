@@ -29,7 +29,7 @@ export default class Command extends BaseCommand {
                     categories[info.config.category].push(info)
                 }
             }
-            let text = `🎫 *${this.client.config.name} Command List* 🎫\n\n`
+            let text = `🚀 *Hey, ${M.sender.username}! ${this.client.config.name}'s Command Center is ready for action! Check out these cool commands:* 🚀\n\n`
             const keys = Object.keys(categories)
             for (const key of keys)
                 text += `${this.emojis[keys.indexOf(key)]} *${key.toUpperCase()}*\n❐ \`\`\`${categories[key]
@@ -37,7 +37,7 @@ export default class Command extends BaseCommand {
                     .join(', ')}\`\`\`\n\n`
 
             return void M.replyRaw({
-                text: `${text}*📗 Note: You can get a brief detail of the command by using _${this.client.config.prefix}help <command name>_*\n🔰 *Usage: ${this.client.config.prefix}help anime*`,
+                text: `${text}📘 *Pro Tip: Get more details with ${this.client.config.prefix}help <command>*\n🔰 *Example: ${this.client.config.prefix}help anime*`,
                 contextInfo: {
                     externalAdReply: {
                         title: `${this.client.config.name}'s Commands`,
