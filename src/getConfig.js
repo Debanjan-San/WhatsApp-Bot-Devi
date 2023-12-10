@@ -5,9 +5,8 @@ const getConfig = () => {
         session: process.env.SESSION || 'session',
         prefix: process.env.PREFIX || '#',
         port: process.env.PORT || 3000,
-        imgbb: process.env.IMGBB || 'a9d5bf5f3b1137d40b57c387a898ba81',
-        mongo:
-            process.env.MONGO || 'mongodb+srv://cara:das1234@cluster0.d2czz.mongodb.net/?retryWrites=true&w=majority',
+        imgbb: process.env.IMGBB,
+        mongo: process.env.MONGO || '',
         mods: process.env.MODS
             ? process.env.MODS.split(',').map((id) => {
                   if (id.endsWith('@s.whatsapp.net')) return id
