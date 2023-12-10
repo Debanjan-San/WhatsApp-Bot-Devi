@@ -1,2 +1,19 @@
 language="nodejs"
-run="pm2 start src/index.js && pm2 logs"
+run="pm2 start src/index.js --deep-monitoring --attach"
+entrypoint = "index.js"
+hidden = [".config", "package-lock.json"]
+modules = ["nodejs-20:v8-20230920-bd784b9"]
+
+[unitTest]
+language = "nodejs"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix", ".config", "package.json", "package-lock.json"]
+
+[nix]
+channel = "stable-23_05"
+
+[deployment]
+run = ["node", "index.js"]
+deploymentTarget = "cloudrun"
+ignorePorts = false
