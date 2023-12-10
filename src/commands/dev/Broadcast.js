@@ -16,6 +16,7 @@ export default class Command extends BaseCommand {
     }
 
     exec = async (M, { text }) => {
+        if (!text) return void (await M.reply('❌ Sorry you did not give any text!'))
         const groups = Object.keys(await this.client.groupFetchAllParticipating())
         for (const group of groups) {
             const msg = `🏮 *「 ${this.client.config.name.toUpperCase()} BROADCAST 」* 🏮\n\n📮 ${text}\n\n`

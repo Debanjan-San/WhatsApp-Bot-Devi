@@ -20,7 +20,7 @@ export default class Command extends BaseCommand {
         if (M.mentioned.includes(this.client.user.id)) return void (await M.reply("❌ You can't ship the bot"))
         const users = await Promise.all(
             M.mentioned.slice(0, 2).map(async (id) => {
-                const { username } = await this.client.DB.getUserInfo(id)
+                const { username } = await this.client.DB.getUserInfo(id, this.client)
                 return {
                     name: username,
                     image: await this.client.util.fetchBuffer(
