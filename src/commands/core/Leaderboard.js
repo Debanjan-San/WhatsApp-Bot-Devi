@@ -4,6 +4,7 @@ export default class Command extends BaseCommand {
     constructor(client, handler) {
         super(client, handler, {
             command: 'leaderboard',
+            aliases: ['lb'],
             category: 'core',
             description: {
                 content: 'Give a leaderboard of Xp',
