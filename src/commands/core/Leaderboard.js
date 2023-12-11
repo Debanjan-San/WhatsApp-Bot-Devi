@@ -19,7 +19,6 @@ export default class Command extends BaseCommand {
         const totalParticipants = (await this.client.DB.user.all()).map((jid) => {
             return {
                 jid: jid.id + '.whatsapp.net',
-                username: jid.value.whatsapp.net.username ?? 'User',
                 exp: jid.value.whatsapp.net.exp ?? 0,
                 level: jid.value.whatsapp.net.level ?? 0
             }
@@ -33,9 +32,17 @@ export default class Command extends BaseCommand {
         const shortedParticipants = participants.sort((a, b) => b.exp - a.exp)
         let text = ''
         shortedParticipants.slice(0, 10).map((participant, i) => {
-            text += `${this.emojis[i]} *${participant.username}*\n🌟 *Exp:* ${participant.exp}\n🏅 *Level:* ${participant.level}\n\n`
+            text += `${this.emojis[i]} *@${participant.jid.split('@')[0]}*\n🌟 *Exp:* ${participant.exp}\n🏅 *Level:* ${
+                participant.level
+            }\n\n`
         })
-        return void (await M.reply(text))
+        return void (await M.reply(
+            text,
+            'text',
+            undefined,
+            undefined,
+            shortedParticipants.map((x) => x.jid)
+        ))
     }
 
     emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
