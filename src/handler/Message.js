@@ -111,6 +111,7 @@ export default class MessageHandler {
         if (!M.group.toggled.chatbot) return
         if (M.quoted?.sender) M.mentioned.push(M.quoted.sender)
         if (!M.mentioned.includes(this.client.util.sanitizeJid(this.client.user?.id ?? ''))) return
+        M.mentioned.pop()
         const { data } = await axios.post('https://bard.rizzy.eu.org/backend/conversation', { ask: M.content })
         return void (await this.client.sendMessage(M.from, { text: data.content, mentions: M.mentioned }))
     }
