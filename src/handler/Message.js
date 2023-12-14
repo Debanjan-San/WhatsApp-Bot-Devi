@@ -26,7 +26,7 @@ export default class MessageHandler {
         }
         const { cmd } = context
         const command = this.commands.get(cmd) || this.aliases.get(cmd)
-        const user = await this.client.DB.getUserInfo(M.sender.jid, this.client)
+        const user = await this.client.DB.getUserInfo(M.sender.jid)
         this.client.log.notice(`(CMD): ${cmd} from ${M.sender.username ?? ''} in ${M.group?.title || 'Direct Message'}`)
         if (!command) return void (await M.reply('💔 No Command Found! Try using one from the help list'))
         const cmdStatus = (await this.client.DB.command.get(command.config?.command)) ?? {
