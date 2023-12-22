@@ -1,6 +1,6 @@
 <div align="center">
   
-  <img src="https://i.imgur.com/22WppSh.jpg" width="450" height="250" border="0" alt="PFP">
+  <img src="https://i.imgur.com/22WppSh.jpg" border="0">
   <p>Don't forget to click ⭐️ and fork this repository</p>
 
 **This whatsapp bot project use**
