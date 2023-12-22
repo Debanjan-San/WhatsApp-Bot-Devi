@@ -31,6 +31,6 @@ export default class Command extends BaseCommand {
             type: StickerTypes.FULL,
             quality: 70
         })
-        await M.reply(await sticker.build(), 'sticker')
+        return void (await M.reply(await sticker.build(), 'sticker'))
     }
 }

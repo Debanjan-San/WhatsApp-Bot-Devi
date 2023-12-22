@@ -16,13 +16,13 @@ export default class Command extends BaseCommand {
     }
 
     exec = async (M, { text }) => {
-        if (!text) return void M.reply('Please provide a word.')
+        if (!text) return void M.reply('❌ Please provide a word')
         const query = text.trim()
         const { list } = await this.client.util.fetch(`https://api.urbandictionary.com/v0/define?term=${query}`)
-        if (!list.length) return void M.reply('Not Found')
+        if (!list.length) return void (await M.reply('❌ Not Found'))
         let Text = `📚 *UrbanDictionary:* "${query}"`
-            Text += `\n\n📖 *Definition:* ${list[0]?.definition}`
-            Text += `\n\n💬 *Example:* ${list[0]?.example}`
+        Text += `\n\n📖 *Definition:* ${list[0]?.definition}`
+        Text += `\n\n💬 *Example:* ${list[0]?.example}`
         return void (await M.reply(Text.replace(/\[+|\]+/g, '')))
     }
 }

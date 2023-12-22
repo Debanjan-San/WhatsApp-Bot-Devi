@@ -34,11 +34,11 @@ export default class Command extends BaseCommand {
         })
         if (parseInt(videoDetails.lengthSeconds) > 600) return void (await M.reply('❌ Audio is too long'))
         try {
-            M.replyRaw({
+            return void (await M.replyRaw({
                 document: await video.getBuffer(),
                 mimetype: 'audio/mpeg',
                 fileName: videoDetails.title + '.mp3'
-            })
+            }))
         } catch (e) {
             return void (await M.reply('❌ Failed to download Audio '.concat(typeof e === 'string' ? e : '')))
         }

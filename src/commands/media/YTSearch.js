@@ -8,7 +8,7 @@ export default class Command extends BaseCommand {
             aliases: ['yts'],
             category: 'media',
             description: {
-                content: 'Get search results from youtube.',
+                content: 'Get search results from youtube',
                 usage: '[search]'
             },
             dm: true,

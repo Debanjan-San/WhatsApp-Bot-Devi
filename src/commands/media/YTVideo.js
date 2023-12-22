@@ -34,8 +34,11 @@ export default class Command extends BaseCommand {
         })
         if (parseInt(videoDetails.lengthSeconds) > 600) return void (await M.reply('❌ Video is too long'))
         try {
-            const data = await video.getBuffer()
-            M.reply(data, 'video')
+            return void (await M.replyRaw({
+                document: await video.getBuffer(),
+                mimetype: 'video/mp4',
+                fileName: videoDetails.title + '.mp4'
+            }))
         } catch (e) {
             console.log(e)
             M.reply('❌ Failed to download video'.concat(typeof e === 'string' ? e : ''))
