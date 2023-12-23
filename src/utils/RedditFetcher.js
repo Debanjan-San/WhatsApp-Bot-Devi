@@ -1,4 +1,4 @@
-import Utils from './Util'
+import Utils from './Util.js'
 export class RedditFetcher {
     constructor(reddit) {
         this.reddit = reddit
