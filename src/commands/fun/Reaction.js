@@ -25,7 +25,7 @@ export default class Command extends BaseCommand {
                 .join('\n- ')}\n🔗  *Usage:* ${this.client.config.prefix}reaction (reaction) [tag/quote user] | ${
                 this.client.config.prefix
             }(reaction) [tag/quote user]\nExample: ${this.client.config.prefix}pat`
-            return void M.reply(reactionList)
+            return void (await M.reply(reactionList))
         }
 
         const single = M.mentioned[0] === M.sender.jid
