@@ -6,7 +6,7 @@ export default class Command extends BaseCommand {
             command: 'hi',
             category: 'core',
             description: {
-                content: 'Say hello to the bot.'
+                content: 'Say hello to the bot'
             },
             dm: true,
             exp: 1
