@@ -20,7 +20,7 @@ export default class Command extends BaseCommand {
         if (data.error) return void (await M.reply("❌ Couldn't find any lyrics"))
 
         return void (await M.replyRaw({
-            text: `🎊 *Title:* ${data.title}\n🖋️ *Artist:* ${data.author}\n\n ${data.lyrics}`,
+            text: `🎊 *Title: ${data.title}*\n🖋️ *Artist: ${data.author}*\n\n ${data.lyrics}`,
             contextInfo: {
                 externalAdReply: {
                     title: data.title,

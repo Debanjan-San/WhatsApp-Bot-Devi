@@ -32,21 +32,21 @@ export default class Command extends BaseCommand {
                     ShowAdAttribution: true
                 }
             },
-            caption: `🏷️ *Group Subject:* ${M.group?.metadata.subject ?? 'N/A'}
+            caption: `🏷️ *Group Subject: ${M.group?.metadata.subject ?? 'N/A'}*
 
-🎖️ *Admins:* ${M.group?.admins.length ?? 0}
+🎖️ *Admins: ${M.group?.admins.length ?? 0}*
 
-📋 *Total Members:* ${M.group?.participants.length ?? 0}
+📋 *Total Members: ${M.group?.participants.length ?? 0}*
         
-🍃 *Events:* ${M.group.events ? 'Enabled' : 'Disabled'}
+🍃 *Events: ${M.group.events ? 'Enabled' : 'Disabled'}*
 
-⚡ *Mods:* ${M.group.toggled.mods ? 'Enabled' : 'Disabled'}
+⚡ *Mods: ${M.group.toggled.mods ? 'Enabled' : 'Disabled'}*
 
-🔞 *Nsfw:* ${M.group.toggled.nsfw ? 'Enabled' : 'Disabled'}
+🔞 *Nsfw: ${M.group.toggled.nsfw ? 'Enabled' : 'Disabled'}*
 
-🤖 *Chatbot:* ${M.group.toggled.chatbot ? 'Enabled' : 'Disabled'}
+🤖 *Chatbot: ${M.group.toggled.chatbot ? 'Enabled' : 'Disabled'}*
 
-🌌 *Description:* 
+🌌 *Description:*
         
 ${M.group?.metadata.desc ?? 'N/A'}`
         }))
