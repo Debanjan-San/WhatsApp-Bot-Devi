@@ -1,6 +1,7 @@
 import { makeCacheableSignalKeyStore, fetchLatestBaileysVersion, useMongoDBAuthState } from '@iamrony777/baileys'
 import { createLogger } from './utils/Logger.js'
 import DatabaseHandler from './handler/Database.js'
+import Update from './utils/Update.js'
 import getConfig from './getConfig.js'
 import { MongoClient } from 'mongodb'
 import P from 'pino'
@@ -12,6 +13,7 @@ import Devi from './libs/Devi.js'
         log.error('No mongo url provided')
         return process.exit(1)
     }
+    new Update(log).gitPull()
     const mongo = new MongoClient(config.mongo, {
         socketTimeoutMS: 1_00_000,
         connectTimeoutMS: 1_00_000,
