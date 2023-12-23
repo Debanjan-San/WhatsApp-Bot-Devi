@@ -24,7 +24,7 @@ export default class Command extends BaseCommand {
             return void M.reply("🔞 Cannot display NFSW content as the group hasn't enabled NSFW")
         if (spoiler) await M.reply('⚠ *SPOILER WARNING* ⚠')
         const urlSplit = url.split('.')
-        const text = `🖌️ *Title:* ${title}\n*👨‍🎨 Author:* ${author}\n*🎏 Subreddit:* ${subreddit}`
+        const caption = `🖌️ *Title:* ${title}\n*👨‍🎨 Author:* ${author}\n*🎏 Subreddit:* ${subreddit}`
         let buffer = await this.client.util.fetchBuffer(url)
         const gif = urlSplit[urlSplit.length - 1] === 'gif'
         if (gif) buffer = await this.client.util.gifToMp4(buffer)
@@ -32,7 +32,7 @@ export default class Command extends BaseCommand {
         return void (await M.replyRaw({
             [type]: buffer,
             gifPlayback: gif ? true : undefined,
-            caption: text,
+            caption,
             contextInfo: {
                 externalAdReply: {
                     title,
