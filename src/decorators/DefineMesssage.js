@@ -21,8 +21,8 @@ export default class DefineMesssage {
             this.chat === 'dm' && this.M.key.fromMe
                 ? this.client.util.sanitizeJid(this.client.user?.id || '')
                 : this.chat === 'group'
-                ? this.client.util.sanitizeJid(M.key.participant || '')
-                : this.client.util.sanitizeJid(this.from)
+                  ? this.client.util.sanitizeJid(M.key.participant || '')
+                  : this.client.util.sanitizeJid(this.from)
         if (this.M.pushName) this.sender.username = this.M.pushName
         if (this.M.message?.ephemeralMessage) this.M.message = this.M.message.ephemeralMessage.message
         const { type } = this
@@ -34,12 +34,12 @@ export default class DefineMesssage {
             return this.M.message?.conversation
                 ? this.M.message.conversation
                 : this.supportedMediaMessages.includes(type)
-                ? this.supportedMediaMessages
-                      .map((type) => this.M.message?.[type]?.caption)
-                      .filter((caption) => caption)[0] || ''
-                : this.M.message?.extendedTextMessage?.text
-                ? this.M.message?.extendedTextMessage.text
-                : ''
+                  ? this.supportedMediaMessages
+                        .map((type) => this.M.message?.[type]?.caption)
+                        .filter((caption) => caption)[0] || ''
+                  : this.M.message?.extendedTextMessage?.text
+                    ? this.M.message?.extendedTextMessage.text
+                    : ''
         })()
         const array =
             (M?.message?.[type]?.contextInfo?.mentionedJid ? M?.message[type]?.contextInfo?.mentionedJid : []) || []

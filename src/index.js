@@ -3,8 +3,8 @@ import { createLogger } from './utils/Logger.js'
 import DatabaseHandler from './handler/Database.js'
 import getConfig from './getConfig.js'
 import { MongoClient } from 'mongodb'
-import P from 'pino'
 import Devi from './libs/Devi.js'
+import P from 'pino'
 ;(async () => {
     const log = createLogger()
     const config = getConfig()

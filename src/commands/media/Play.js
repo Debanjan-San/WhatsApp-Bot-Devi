@@ -1,35 +1,31 @@
 import BaseCommand from '../../libs/BaseCommand.js'
 import YT from '../../utils/YT.js'
+import yts from 'yt-search'
 
 export default class Command extends BaseCommand {
     constructor(client, handler) {
         super(client, handler, {
-            command: 'ytaudio',
-            aliases: ['yta'],
+            command: 'play',
             category: 'media',
             description: {
-                content: 'Download Audio from Youtube',
-                usage: '[YT link]'
+                content: 'Plays Audio from Youtube',
+                usage: '[song name]'
             },
             dm: true,
             exp: 5
         })
     }
 
-    exec = async (M) => {
-        if (!M.urls.length) return void (await M.reply('❌ Please provide a youtube URL'))
-        const [url] = M.urls
-        const video = new YT(url, 'audio')
-        if (!video.validateURL()) return void (await M.reply('❌ Invalid URL'))
+    exec = async (M, { text }) => {
+        if (!text) return void (await M.reply('❌ Please provide a song name'))
+        const { videos } = await yts(text)
+        if (!videos || !videos.length) return void M.reply('❌ No matching songs found')
+        const video = new YT(videos[0].url, 'audio')
         const { videoDetails } = await video.getInfo()
-        await M.replyRaw({
-            caption: `📗 *Title: ${videoDetails.title}*\n📕 *Channel: ${videoDetails.author.name}*\n📙 *Duration: ${videoDetails.lengthSeconds}s*`,
-            image: await this.client.util.fetchBuffer(videoDetails.thumbnails[0].url)
-        })
         if (parseInt(videoDetails.lengthSeconds) > 600) return void (await M.reply('❌ Audio is too long'))
         try {
             return void (await M.replyRaw({
-                audio: await video.download('high'),
+                audio: await video.download(),
                 mimetype: 'audio/mp4',
                 fileName: videoDetails.title
             }))

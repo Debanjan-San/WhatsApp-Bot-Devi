@@ -20,11 +20,11 @@ export default class Command extends BaseCommand {
         const media = ['imageMessage', 'videoMessage'].includes(M.type)
             ? M
             : M.quoted?.message.videoMessage ?? M.quoted?.message.imageMessage
-            ? M.quoted.message
-            : M.urls[0] ?? null
+              ? M.quoted.message
+              : M.urls[0] ?? null
         if (!media) return void (await M.reply('❌ No media found!'))
         const [pack, title] = text.split('|')
-        const sticker = await new Sticker(
+        const sticker = new Sticker(
             typeof media === 'string' ? media : await this.client.util.downloadMediaMessage(media),
             {
                 pack: pack ?? 'Davi Bot',
