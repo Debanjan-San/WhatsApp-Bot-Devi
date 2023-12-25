@@ -15,8 +15,8 @@ export default class Command extends BaseCommand {
 
     exec = async (M) => {
         const responce = await this.client.util.fetch('https://smiling-hosiery-bear.cyclic.app/weeb/couplepp')
-        Array.from(this.client.util.getUrls(JSON.stringify(responce))).forEach(
-            async (url) => await M.reply(await this.client.util.fetchBuffer(url), 'image')
-        )
+        Object.values(responce)
+            .slice(2, 4)
+            .forEach(async (url) => await M.reply(await this.client.util.fetchBuffer(url), 'image'))
     }
 }
