@@ -1,5 +1,5 @@
 import Utils from './Util.js'
-export class RedditFetcher {
+export default class RedditFetcher {
     constructor(reddit) {
         this.reddit = reddit
     }
