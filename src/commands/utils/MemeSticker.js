@@ -22,7 +22,7 @@ export default class Command extends BaseCommand {
         const [top, bottom] = text.split('|')
         if (!top || !bottom)
             return void (await M.reply(`❌ No text found!\nEx: ${this.client.config.prefix}memesticker top|bottom`))
-        const base64 = await this.client.util.bufferToBase64(await this.client.util.downloadMediaMessage(image))
+        const base64 = await this.client.util.bufferToBase64(await this.client.util.downloadMediaMessage(media))
         const icon = await getDisplayUrl(base64, this.client.config.imgbb, M.sender.username)
         const data = await this.client.util.fetch(
             `https://api.memegen.link/images/custom/${top}/${bottom}.png?background=${icon}`
