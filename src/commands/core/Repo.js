@@ -3,7 +3,7 @@ import BaseCommand from '../../libs/BaseCommand.js'
 export default class Command extends BaseCommand {
     constructor(client, handler) {
         super(client, handler, {
-            command: 'Repo',
+            command: 'repo',
             category: 'core',
             description: {
                 content: 'Gives you the repo link'
