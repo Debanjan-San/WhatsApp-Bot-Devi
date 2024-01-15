@@ -22,9 +22,9 @@ export default class Command extends BaseCommand {
         if (cmd === 'reaction' || cmd === 'r') {
             const reactionList = `💫 *Available Reactions:*\n\n- ${reactions
                 .map((reaction) => this.client.util.capitalize(reaction))
-                .join('\n- ')}\n🔗  *Usage:* ${this.client.config.prefix}reaction (reaction) [tag/quote user] | ${
+                .join('\n- ')}\n🔗  *Usage:* ${this.client.config.prefix}(reaction) [tag/quote user]\nExample: ${
                 this.client.config.prefix
-            }(reaction) [tag/quote user]\nExample: ${this.client.config.prefix}pat`
+            }pat`
             return void (await M.reply(reactionList))
         }
 

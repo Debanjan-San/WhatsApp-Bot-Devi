@@ -35,9 +35,9 @@ export default class Command extends BaseCommand {
         if (cmd === 'cu') {
             const checkList = `🎃 *Available Checks:*\n\n- ${options
                 .map((check) => this.client.util.capitalize(check))
-                .join('\n- ')}\n🔗  *Usage:* ${this.client.config.prefix}checkuser (check) [tag/quote user] | ${
+                .join('\n- ')}\n🔗  *Usage:* ${this.client.config.prefix}(check) [tag/quote user]\nExample: ${
                 this.client.config.prefix
-            }(check) [tag/quote user]\nExample: ${this.client.config.prefix}cutecheck`
+            }cutecheck`
             return void (await M.reply(checkList))
         }
         const types = [
