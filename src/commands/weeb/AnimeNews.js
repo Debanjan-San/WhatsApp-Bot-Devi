@@ -18,7 +18,7 @@ export default class Command extends BaseCommand {
             .fetch(`https://weeb-api.vercel.app/telegram/anime_news`)
             .then(async (results) => {
                 if (!results.length) return void M.reply('🟥 Not news Found')
-                for (result of results) {
+                for (const result of results) {
                     let msg = ''
                     msg += `📔 *Title: ${result.caption}\n\n`
                     msg += `💾 *ID: ${result.id}*\n\n`
@@ -32,8 +32,7 @@ export default class Command extends BaseCommand {
                     return void (await M.reply(image, 'image', undefined, msg))
                 }
             })
-            .catch((err) => {
-                console.log(err)
+            .catch(() => {
                 return void M.reply(`❌ Error!`)
             })
     }
