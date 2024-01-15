@@ -20,7 +20,7 @@ export default class Command extends BaseCommand {
                 if (!results.length) return void M.reply('🟥 Not news Found')
                 for (const result of results) {
                     let msg = ''
-                    msg += `📔 *Title: ${result.caption}\n\n`
+                    msg += `📔 *Title: ${result.caption}*\n\n`
                     msg += `💾 *ID: ${result.id}*\n\n`
                     msg += `♨ *Views: ${result.views}*\n\n`
                     msg += `🕛 *Time: ${result.time} Per Ep.*\n\n`
@@ -29,7 +29,7 @@ export default class Command extends BaseCommand {
                         result.mediaUrl ||
                             'https://wallpapers-clan.com/wp-content/uploads/2021/04/Anime-App-Icons-News.png'
                     )
-                    return void (await M.reply(image, 'image', undefined, msg))
+                    await M.reply(image, 'image', undefined, msg)
                 }
             })
             .catch(() => {
