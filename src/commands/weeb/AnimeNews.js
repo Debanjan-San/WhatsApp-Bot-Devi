@@ -9,6 +9,7 @@ export default class Command extends BaseCommand {
             description: {
                 content: 'Gives you news about anime'
             },
+            dm: true,
             exp: 9
         })
     }

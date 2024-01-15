@@ -21,7 +21,7 @@ export default class Command extends BaseCommand {
         if (!media) return void (await M.reply('❌ No sticker found!'))
         const [pack, title] = text.split('|')
         const sticker = new Sticker(await this.client.util.downloadMediaMessage(media), {
-            pack: pack ?? 'Davi Bot',
+            pack: pack ?? `${this.client.config.name} Bot`,
             author: title ?? 'By Debanjan',
             type: StickerTypes.FULL,
             quality: 70

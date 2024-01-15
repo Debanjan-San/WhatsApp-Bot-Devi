@@ -18,7 +18,7 @@ export default class Command extends BaseCommand {
 
     exec = async (M, { text }) => {
         if (!text) return void (await M.reply('❌ Please provide a search term'))
-        const reddit = await new RedditFetcher(query).fetch()
+        const reddit = await new RedditFetcher(text).fetch()
         if (reddit.error) return await void M.reply('❌ Invalid Subreddit')
         const { url, nsfw, spoiler, title, author, subreddit, postLink } = reddit
         if (nsfw && !M.group.toggled.nsfw)

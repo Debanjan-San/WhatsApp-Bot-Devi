@@ -40,21 +40,7 @@ export default class Command extends BaseCommand {
 
 🟥 *Ban: ${status.isBan}*
     `,
-            image: {
-                url
-            },
-            contextInfo: {
-                externalAdReply: {
-                    title: `${M.sender.username}'s Profile`,
-                    body: '',
-                    thumbnail: await this.client.util.fetchBuffer(url),
-                    mediaType: 1,
-                    mediaUrl: '',
-                    sourceUrl: '',
-                    ShowAdAttribution: true
-                }
-            },
-            jpegThumbnail: (await this.client.util.fetchBuffer(url)).toString('base64')
+            image: await this.client.util.fetchBuffer(url)
         }))
     }
 }
