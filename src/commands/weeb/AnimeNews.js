@@ -32,7 +32,8 @@ export default class Command extends BaseCommand {
                     return void (await M.reply(image, 'image', undefined, msg))
                 }
             })
-            .catch(() => {
+            .catch((err) => {
+                console.log(err)
                 return void M.reply(`❌ Error!`)
             })
     }
