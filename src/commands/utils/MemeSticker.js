@@ -1,4 +1,5 @@
 import BaseCommand from '../../libs/BaseCommand.js'
+import { getDisplayUrl } from '../../utils/Upload.js'
 import { Sticker, StickerTypes } from 'wa-sticker-formatter'
 
 export default class Command extends BaseCommand {
