@@ -1,4 +1,5 @@
 import BaseCommand from '../../libs/BaseCommand.js'
+import RedditFetcher from '../../utils/RedditFetcher.js'
 
 export default class Command extends BaseCommand {
     constructor(client, handler) {

@@ -65,10 +65,10 @@ export default class Utils {
         return Math.random() * (max - min) + min
     }
 
-    getRandomItem = (array) => array[getRandomInt(0, array.length - 1)]
+    getRandomItem = (array) => array[this.getRandomInt(0, array.length - 1)]
 
     getRandomItems = (array, count) => {
-        return new Array(count).fill(0).map(() => getRandomItem(array))
+        return new Array(count).fill(0).map(() => this.getRandomItem(array))
     }
 
     getUrls = (url) => {
