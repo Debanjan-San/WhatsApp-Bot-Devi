@@ -23,7 +23,7 @@ export default class Command extends BaseCommand {
                 let msg = ''
                 msg += `🎀 *Name: ${data[0].title.english}*\n\n`
                 msg += `👁️‍🗨️ *Romanji: ${data[0].title.romaji}*\n\n`
-                msg += `💮 *Japanese: *${data[0].title.native}*\n\n`
+                msg += `💮 *Japanese: ${data[0].title.native}*\n\n`
                 msg += `♨ *Type: ${data[0].format}*\n\n`
                 msg += `🔞 *Is-Adult: ${data[0].isAdult}*\n\n`
                 msg += `💫 *Status: ${data[0].status}*\n\n`
@@ -33,7 +33,7 @@ export default class Command extends BaseCommand {
                 msg += `🍥 *Last Aired: ${data[0].endDate}*\n\n`
                 msg += `🧧 *Genres: ${data[0].genres.join(', ')}*\n\n`
                 msg += `🎞 *Trailer: https://youtu.be/${data[0].trailer ? data[0].trailer.id : 'null'}*\n\n`
-                msg += `📃 *Description: ${data[0].description}`
+                msg += `📃 *Description:* ${data[0].description}`
                 const image = await this.client.util.fetchBuffer(data[0].imageUrl)
                 return void (await M.reply(image, 'image', undefined, msg))
             })
