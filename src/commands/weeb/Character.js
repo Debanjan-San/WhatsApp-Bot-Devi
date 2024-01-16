@@ -28,7 +28,7 @@ export default class Command extends BaseCommand {
                 msg += `🚻 *Gender: ${data[0]?.gender}*\n\n`
                 msg += `🩸 *Blood Type: ${data[0]?.bloodType}*\n\n`
                 msg += `📃 *Description:* ${data[0]?.description.replace(/\([^)]*\)*/g, '')}`
-                const image = await this.client.util.fetchBuffer(data[0]?.image)
+                const image = await this.client.util.fetchBuffer(data[0]?.imageUrl)
                 return void (await M.reply(image, 'image', undefined, msg))
             })
             .catch((err) => {
