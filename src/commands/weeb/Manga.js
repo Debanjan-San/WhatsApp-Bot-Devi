@@ -17,7 +17,7 @@ export default class Command extends BaseCommand {
     exec = async (M, { text }) => {
         if (!text) return void (await M.reply('❌ Sorry you did not give any query!'))
         await this.client.util
-            .fetch(`https://weeb-api.vercel.app/manga?search=${query}`)
+            .fetch(`https://weeb-api.vercel.app/manga?search=${text}`)
             .then(async (data) => {
                 if (!data.length) return void M.reply('Not Found - Invalid Input')
                 let msg = ''
