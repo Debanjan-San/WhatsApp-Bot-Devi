@@ -140,23 +140,23 @@ export default class MessageHandler {
 
     loadCommands = async () => {
         this.client.log.info('Loading Commands...')
-        
-        const currentWorkingDir = process.cwd();
-        const path = join(currentWorkingDir, 'src', 'commands');
-        const files = this.client.util.readdirRecursive(path);
+
+        const currentWorkingDir = process.cwd()
+        const path = join(currentWorkingDir, 'src', 'commands')
+        const files = this.client.util.readdirRecursive(path)
         for (const file of files) {
-            const filename = file.split('/');
+            const filename = file.split('/')
             if (!filename[filename.length - 1].startsWith('_')) {
-                const filePath = 'file://' + file.replace(/\\/g, '/');
-                const command = new (Object.values(await import(filePath))[0])(this.client, this);
-                this.commands.set(command.config.command, command);
+                const filePath = 'file://' + file.replace(/\\/g, '/')
+                const command = new (Object.values(await import(filePath))[0])(this.client, this)
+                this.commands.set(command.config.command, command)
                 if (command.config.aliases) {
-                    command.config.aliases.forEach((alias) => this.aliases.set(alias, command));
+                    command.config.aliases.forEach((alias) => this.aliases.set(alias, command))
                 }
-                this.client.log.info(`Loaded: ${command.config.command} from ${command.config.category}`);
+                this.client.log.info(`Loaded: ${command.config.command} from ${command.config.category}`)
             }
         }
-        this.client.log.notice(`Successfully Loaded ${this.commands.size} Commands`);
+        this.client.log.notice(`Successfully Loaded ${this.commands.size} Commands`)
     }
 
     parseArgs = (raw) => {
