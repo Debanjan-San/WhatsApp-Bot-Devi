@@ -15,7 +15,7 @@
 </div>
 
 # Devi Bot
-Devi is a whatsapp bot created with [@whiskeysockets/baileys](https://github.com/WhiskeySockets/Baileys) and written in javascript(Es6), and this is my first open source project, if there is a mistake feel free to open a issues.
+Devi is a whatsapp bot created with [@whiskeysockets/baileys](https://github.com/WhiskeySockets/Baileys) and written in javascript(ES6), and this is my first open source project, if there is a mistake feel free to open a issues.
 
 
 **NOTE:** I can't guarantee you will not be blocked by using this code, although it has worked for me. WhatsApp does not allow bots or unofficial clients on their platform, so this shouldn't be considered totally safe.
