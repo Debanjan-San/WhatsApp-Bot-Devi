@@ -36,10 +36,10 @@ export default class Command extends BaseCommand {
                     .map(
                         (command) =>
                             `*${this.client.config.prefix}${command.config?.command} ${
-                                command.config.description.usage ?? ''
+                                command.config.description.usage ?? '_'
                             }*\n_${command.config.description?.content}_`
                     )
-                    .join('\n\n')}\n`
+                    .join('\n\n')}\n\n`
 
             return void M.replyRaw({
                 text: `${text}📘 *Pro Tip: Get more details with ${this.client.config.prefix}help <command>*\n🔰 *Example: ${this.client.config.prefix}help anime*`,
