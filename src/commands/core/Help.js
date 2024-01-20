@@ -29,12 +29,17 @@ export default class Command extends BaseCommand {
                     categories[info.config.category].push(info)
                 }
             }
-            let text = `🚀 *Hey, ${M.sender.username}! ${this.client.config.name}'s Command Center is ready for action! Check out these cool commands:* 🚀\n\n`
+            let text = `🚀 *Hey, ${M.sender.username}! ${this.client.config.name}'s Command Center is ready for action! Check out these cool commands:* 🚀\n\n*My Prefix is ( ${this.client.config.prefix} )*\n\n🌟 Command List 🌟`
             const keys = Object.keys(categories)
             for (const key of keys)
-                text += `${this.emojis[keys.indexOf(key)]} *${key.toUpperCase()}*\n❐ \`\`\`${categories[key]
-                    .map((command) => command.config?.command)
-                    .join(', ')}\`\`\`\n\n`
+                text += `━━❰･${key.toUpperCase()}${this.emojis[keys.indexOf(key)]}Side･❱━━\n\n${categories[key]
+                    .map(
+                        (command) =>
+                            `${this.client.config.prefix}${command.config?.command} ${
+                                command.config.description.usage ?? ''
+                            }\n*Description:* ${command.config.description?.content}`
+                    )
+                    .join('\n')}\n\n`
 
             return void M.replyRaw({
                 text: `${text}📘 *Pro Tip: Get more details with ${this.client.config.prefix}help <command>*\n🔰 *Example: ${this.client.config.prefix}help anime*`,
