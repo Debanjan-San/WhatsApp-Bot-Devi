@@ -7,7 +7,7 @@ export default class Command extends BaseCommand {
             category: 'moderation',
             description: {
                 content: 'Changes the group name/description',
-                usage: 'set [name] --name|| set [description/quote] --desc'
+                usage: '[name] --name|| [description/quote] --desc'
             },
             exp: 1
         })
