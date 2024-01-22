@@ -6,6 +6,7 @@ const getConfig = () => {
         prefix: process.env.PREFIX || '#',
         port: process.env.PORT || 3000,
         imgbb: process.env.IMGBB,
+        chatboturi: process.env.BRAINSHOP || '',
         mongo: process.env.MONGO || '',
         mods: process.env.MODS
             ? process.env.MODS.split(',').map((id) => {

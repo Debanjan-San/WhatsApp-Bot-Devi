@@ -1,15 +1,7 @@
 import { join } from 'path'
-import { URL } from 'url'
 import { Quiz } from 'anime-quiz'
 import canvafy from 'canvafy'
-import axios from 'axios'
 export default class MessageHandler {
-    commands = new Map()
-    aliases = new Map()
-    count = new Map()
-    tried = new Map()
-    quiz = new Map()
-
     constructor(client) {
         this.client = client
     }
@@ -112,8 +104,24 @@ export default class MessageHandler {
         if (M.quoted?.sender) M.mentioned.push(M.quoted.sender)
         if (!M.mentioned.includes(this.client.util.sanitizeJid(this.client.user?.id ?? ''))) return
         M.mentioned.pop()
-        const { data } = await axios.post('https://bard.rizzy.eu.org/backend/conversation', { ask: M.content })
-        return void (await this.client.sendMessage(M.from, { text: data.content, mentions: M.mentioned }))
+        if (this.client.config.chatboturi) {
+            const myUrl = new URL(this.client.config.chatboturi)
+            const params = myUrl.searchParams
+            await this.client.util
+                .fetch(
+                    `${encodeURI(
+                        `http://api.brainshop.ai/get?bid=${params.get('bid')}&key=${params.get('key')}&uid=${
+                            M.sender.jid
+                        }&msg=${M.content}`
+                    )}`
+                )
+                .then((res) => {
+                    return void this.client.sendMessage(M.from, { text: res.cnt, mentions: M.mentioned })
+                })
+                .catch(() => {
+                    return void M.reply(`Ummmmmmmmm.`)
+                })
+        }
     }
 
     moderate = async (M) => {
@@ -140,7 +148,6 @@ export default class MessageHandler {
 
     loadCommands = async () => {
         this.client.log.info('Loading Commands...')
-
         const currentWorkingDir = process.cwd()
         const path = join(currentWorkingDir, 'src', 'commands')
         const files = this.client.util.readdirRecursive(path)
@@ -175,4 +182,10 @@ export default class MessageHandler {
         // prettier-ignore
         return { cmd, text, flags, args, raw }
     }
+
+    commands = new Map()
+    aliases = new Map()
+    count = new Map()
+    tried = new Map()
+    quiz = new Map()
 }
