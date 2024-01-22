@@ -65,7 +65,7 @@ export default class Command extends BaseCommand {
         }
         return void (await M.reply(`🟥 *Command: ${command.config.command}*
 🟧 *Category: ${command.config.category}*
-🟨 *Aliases: ${command.config?.aliases.join(', ').trim() ?? 'None'}*
+🟨 *Aliases: ${command.config?.aliases.join(', ').trim() || 'None'}*
 🟩 *PrivateChat: ${command.config.dm ? 'True' : 'False'}*
 🟦 *Admin: ${command.config.adminOnly ? 'True' : 'False'}*
 ⬛ *Status: ${cmdStatus.isDisabled}* - ${cmdStatus.reason}
