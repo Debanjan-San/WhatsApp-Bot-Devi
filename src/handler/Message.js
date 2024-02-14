@@ -184,8 +184,12 @@ export default class MessageHandler {
     }
 
     commands = new Map()
+
     aliases = new Map()
+
     count = new Map()
+
     tried = new Map()
+
     quiz = new Map()
 }

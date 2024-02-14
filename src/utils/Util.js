@@ -2,6 +2,7 @@ import { readFile, unlink, writeFile, readdirSync, statSync } from 'fs'
 import { format, promisify } from 'util'
 import { exec } from 'child_process'
 import { tmpdir } from 'os'
+import { Canvacord } from 'canvacord'
 import { join } from 'path'
 import DefineMesssage from '../decorators/DefineMesssage.js'
 import { jidDecode, downloadContentFromMessage } from '@iamrony777/baileys'
@@ -43,6 +44,27 @@ export default class Utils {
                 resolve(base64string)
             }, 1000)
         })
+
+    displayBoard = async (Board) => {
+        const board = Board
+        const data = {
+            a1: board[0],
+            b1: board[1],
+            c1: board[2],
+            a2: board[3],
+            b2: board[4],
+            c2: board[5],
+            a3: board[6],
+            b3: board[7],
+            c3: board[8]
+        }
+        return await Canvacord.tictactoe(data, {
+            bg: 'black',
+            bar: 'blue',
+            x: 'red',
+            o: 'white'
+        })
+    }
 
     extractNumbers = (content) => {
         const search = content.match(/(-\d+|\d+)/g)
