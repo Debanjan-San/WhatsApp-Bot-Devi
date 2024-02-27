@@ -30,8 +30,9 @@ export default class Command extends BaseCommand {
         if (participants.length <= 10)
             return void (await M.reply("❌ You don't have enough participants to create a leaderboard"))
         const shortedParticipants = participants.sort((a, b) => b.exp - a.exp)
+        const TopTenMembers = shortedParticipants.slice(0, 10)
         let text = ''
-        shortedParticipants.slice(0, 10).map((participant, i) => {
+        TopTenMembers.map((participant, i) => {
             text += `${this.emojis[i]} *@${participant.jid.split('@')[0]}*\n🌟 *Exp: ${participant.exp}*\n🏅 *Level: ${
                 participant.level
             }*\n\n`
@@ -41,7 +42,7 @@ export default class Command extends BaseCommand {
             'text',
             undefined,
             undefined,
-            shortedParticipants.map((x) => x.jid)
+            TopTenMembers.map((x) => x.jid)
         ))
     }
 
