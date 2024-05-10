@@ -43,7 +43,10 @@ export default class DatabaseHandler {
         const isMod = this.config.mods.includes(jid)
         const exp = (await this.user.get(`${jid}.exp`)) ?? 0
         const level = (await this.user.get(`${jid}.level`)) ?? 1
-        const status = (await this.user.get(`${jid}.status`)) ?? { isBan: false, reason: '' }
+        const status = (await this.user.get(`${jid}.status`)) ?? {
+            isBan: false,
+            reason: ''
+        }
         const { requiredXpToLevelUp, rank } = getStats(level)
         return {
             jid,

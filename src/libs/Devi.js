@@ -61,6 +61,5 @@ export default class Devi {
             await this.authSession.saveCreds()
         })
         store.bind(socket.ev)
-        return socket
     }
 }

@@ -116,7 +116,10 @@ export default class MessageHandler {
                     )}`
                 )
                 .then((res) => {
-                    return void this.client.sendMessage(M.from, { text: res.cnt, mentions: M.mentioned })
+                    return void this.client.sendMessage(M.from, {
+                        text: res.cnt,
+                        mentions: M.mentioned
+                    })
                 })
                 .catch(() => {
                     return void M.reply(`Ummmmmmmmm.`)

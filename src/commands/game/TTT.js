@@ -174,7 +174,11 @@ export default class Command extends BaseCommand {
                         taken.push(botMove)
                         board[botModified] = 'O'
                     }
-                    this.game.set(M.from, { lastMarked: M.sender.jid, board, taken })
+                    this.game.set(M.from, {
+                        lastMarked: M.sender.jid,
+                        board,
+                        taken
+                    })
                     ttt = this.game.get(M.from)
                     const verify = this.verifyWin(ttt?.board, Ttt.players[1], Ttt.players[0])
                     const image = await this.client.util.displayBoard(ttt?.board)

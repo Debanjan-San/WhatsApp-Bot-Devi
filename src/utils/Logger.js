@@ -1,7 +1,7 @@
 import winston from 'winston'
 import { format } from 'date-fns'
 
-export function createLogger(prod = false) {
+export const createLogger = (prod = false) => {
     const logger = winston.createLogger({
         level: prod ? 'info' : 'debug',
         levels: {
@@ -17,7 +17,9 @@ export function createLogger(prod = false) {
                 filename: `logs/error-${format(Date.now(), 'yyyy-MM-dd-HH-mm-ss')}.log`,
                 level: 'error'
             }),
-            new winston.transports.File({ filename: `logs/logs-${format(Date.now(), 'yyyy-MM-dd-HH-mm-ss')}.log` })
+            new winston.transports.File({
+                filename: `logs/logs-${format(Date.now(), 'yyyy-MM-dd-HH-mm-ss')}.log`
+            })
         ],
         format: winston.format.combine(
             winston.format.printf((info) => {
