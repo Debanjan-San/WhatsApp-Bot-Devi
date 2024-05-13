@@ -26,7 +26,7 @@
    },
    "dependencies": {
       "@hapi/boom": "^10.0.1",
-      "@iamrony777/baileys": "^6.5.0-7",
+      "@iamrony777/baileys": "^6.7.2-1",
       "@shineiichijo/canvas-chan": "^1.0.1",
       "anime-quiz": "^3.0.0",
       "axios": "^1.5.1",
