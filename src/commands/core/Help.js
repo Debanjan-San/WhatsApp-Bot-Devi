@@ -41,7 +41,7 @@ export default class Command extends BaseCommand {
                     )
                     .join('\n')}\n\n`
 
-            return void M.replyRaw({
+            return void (await M.replyRaw({
                 image: {
                     url: 'https://i.pinimg.com/originals/82/83/68/8283687daf61e2464f30537d2cbca205.jpg'
                 },
@@ -57,7 +57,7 @@ export default class Command extends BaseCommand {
                         ShowAdAttribution: true
                     }
                 }
-            })
+            }))
         }
         const key = parsedArgs.text.toLowerCase()
         const command = this.handler.commands.get(key) || this.handler.aliases.get(key)
