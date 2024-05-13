@@ -29,18 +29,26 @@ export default class Command extends BaseCommand {
                     categories[info.config.category].push(info)
                 }
             }
-            let text = `🚀 *Hey, ${M.sender.username}! ${this.client.config.name}'s Command Center is ready for action! Check out these cool commands:* 🚀\n\n💡 *My Prefix is ( ${this.client.config.prefix} )*\n\n`
+            let text = `👋🏻 (❤️ω❤️) Konnichiwa, senpai ${M.sender.username}! this is ${this.client.util.capitalize(this.client.config.name)}\n\n🎋 *Support us by following us on instagram:* https://www.instagram.com/das_abae\n\n💡 My Prefix is *( ${this.client.config.prefix} )*\n\n    ⇓ *📪 Command list 📪* ⇓\n\n`
             const keys = Object.keys(categories)
             for (const key of keys)
-                text += `*${this.emojis[keys.indexOf(key)]} ${key.toUpperCase()}*\n❐ \`\`\`${categories[key]
-                    .map((command) => command.config?.command)
-                    .join(', ')}\`\`\`\n\n`
+                text += `┌ ◦ *${this.emojis[keys.indexOf(key)]}「${key.toUpperCase()}」${this.emojis[keys.indexOf(key)]}*\n${categories[
+                    key
+                ]
+                    .map(
+                        (command) =>
+                            `*${this.client.config.prefix}${this.replaceWithCustomAlphabet(command.config?.command)}* _${command.config.description.usage ?? ''}_`
+                    )
+                    .join('\n')}\n\n`
 
             return void M.replyRaw({
-                text: `${text}📘 *Pro Tip: Get more details with ${this.client.config.prefix}help <command>*\n🔰 *Example: ${this.client.config.prefix}help anime*`,
+                image: {
+                    url: 'https://i.pinimg.com/originals/82/83/68/8283687daf61e2464f30537d2cbca205.jpg'
+                },
+                caption: `${text}*📇 Notes:*\n*➪ Use ${this.client.config.prefix}help <command name> from help the list to see its description and usage*\n*➪ Eg: ${this.client.config.prefix}help profile*\n*➪ <> means required and [ ] means optional, don't include <> or [ ] when using command.*`,
                 contextInfo: {
                     externalAdReply: {
-                        title: `${this.client.config.name}'s Commands`,
+                        title: `${this.client.util.capitalize(this.client.config.name)}'s Commands`,
                         body: '',
                         thumbnail: await this.client.util.fetchBuffer('https://i.imgur.com/22WppSh.jpg'),
                         mediaType: 1,
@@ -66,6 +74,47 @@ export default class Command extends BaseCommand {
 ⬛ *Status: ${cmdStatus.isDisabled}* - ${cmdStatus.reason}
 🟪 *Usage: ${this.client.config.prefix}${command.config.command} ${command.config.description.usage ?? ''}*
 ⬜ *Description: ${command.config.description?.content}*`))
+    }
+
+    replaceWithCustomAlphabet = (sentence) => {
+        const customAlphabetMap = {
+            a: 'ᴀ',
+            b: 'ʙ',
+            c: 'ᴄ',
+            d: 'ᴅ',
+            e: 'ᴇ',
+            f: 'ꜰ',
+            g: 'ɢ',
+            h: 'ʜ',
+            i: 'ɪ',
+            j: 'ᴊ',
+            k: 'ᴋ',
+            l: 'ʟ',
+            m: 'ᴍ',
+            n: 'ɴ',
+            o: 'ᴏ',
+            p: 'ᴘ',
+            q: 'φ',
+            r: 'ʀ',
+            s: 'ꜱ',
+            t: 'ᴛ',
+            u: 'ᴜ',
+            v: 'ᴠ',
+            w: 'ᴡ',
+            x: 'x',
+            y: 'ʏ',
+            z: 'ᴢ'
+        }
+        const words = sentence.split(' ')
+        const replacedWords = words.map((word) => {
+            const letters = word.split('')
+            const replacedLetters = letters.map((letter) => {
+                const lowercaseLetter = letter.toLowerCase()
+                return customAlphabetMap[lowercaseLetter] || letter
+            })
+            return replacedLetters.join('')
+        })
+        return replacedWords.join(' ')
     }
 
     emojis = ['🌀', '🎴', '🔮', '👑', '🎈', '⚙️', '🍀', '💈', '🔰']
