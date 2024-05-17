@@ -7,7 +7,7 @@ export default class Command extends BaseCommand {
             aliases: ['p'],
             category: 'core',
             description: {
-                content: "View your/other's profile."
+                content: 'View your profile.'
             },
             exp: 7
         })

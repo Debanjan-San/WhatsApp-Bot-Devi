@@ -7,7 +7,7 @@ export default class Command extends BaseCommand {
             command: 'rank',
             category: 'core',
             description: {
-                content: "View your/other's rank."
+                content: 'View your rank.'
             },
             exp: 7
         })

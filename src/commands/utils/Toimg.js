@@ -3,7 +3,7 @@ import BaseCommand from '../../libs/BaseCommand.js'
 export default class Command extends BaseCommand {
     constructor(client, handler) {
         super(client, handler, {
-            command: 'toimage',
+            command: 'toimg',
             category: 'utils',
             description: {
                 content: 'Converts sticker to image',
@@ -17,8 +17,8 @@ export default class Command extends BaseCommand {
     exec = async (M) => {
         const media = Object.keys(M.quoted?.message).includes('stickerMessage') ? M.quoted?.message : M.urls[0] ?? null
         if (!media) return void (await M.reply('❌ No sticker found!'))
-        if (M.quoted?.message.stickerMessage?.isAnimated)
-            return void (await M.reply('❌ Animated sticker is not supported!'))
-        return void (await M.reply(await this.client.util.downloadMediaMessage(media), 'image'))
+        const type = M.quoted?.message.stickerMessage?.isAnimated ? 'video' : 'image'
+        const buffer = await this.client.util.downloadMediaMessage(media)
+        return void (await M.reply(type == 'video' ? await this.client.util.webpToMp4(buffer) : buffer, type))
     }
 }

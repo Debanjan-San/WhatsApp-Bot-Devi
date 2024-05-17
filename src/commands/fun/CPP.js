@@ -14,6 +14,7 @@ export default class Command extends BaseCommand {
     }
 
     exec = async (M) => {
+        return void (await M.reply('❌ NoT Working Right Now ;(!'))
         const responce = await this.client.util.fetch('https://smiling-hosiery-bear.cyclic.app/weeb/couplepp')
         Object.values(responce)
             .slice(2, 4)

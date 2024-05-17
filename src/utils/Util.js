@@ -4,6 +4,8 @@ import { exec } from 'child_process'
 import { tmpdir } from 'os'
 import { Canvacord } from 'canvacord'
 import { join } from 'path'
+import { load } from 'cheerio'
+import FormData from 'form-data'
 import DefineMesssage from '../decorators/DefineMesssage.js'
 import { jidDecode, downloadContentFromMessage } from '@iamrony777/baileys'
 import axios from 'axios'
@@ -64,6 +66,30 @@ export default class Utils {
             x: 'red',
             o: 'white'
         })
+    }
+
+    webpToMp4 = async (webp) => {
+        const request = async (form, file) => {
+            const { data } = await axios.post(
+                file ? `https://ezgif.com/webp-to-mp4/${file}` : 'https://ezgif.com/webp-to-mp4',
+                form,
+                {
+                    headers: { 'Content-Type': `multipart/form-data; boundary=${form._boundary}` }
+                }
+            )
+            return load(data)
+        }
+        const form1 = new FormData()
+        form1.append('new-image-url', '')
+        form1.append('new-image', webp, { filename: 'bold' })
+        const $1 = await request(form1)
+        const file = $1('input[name="file"]').attr('value')
+        const form2 = new FormData()
+        form2.append('file', file)
+        form2.append('convert', 'Convert WebP to MP4!')
+        const $2 = await request(form2, file)
+        const buffer = await this.fetchBuffer(`https:${$2('div#output > p.outfile > video > source').attr('src')}`)
+        return buffer
     }
 
     extractNumbers = (content) => {
