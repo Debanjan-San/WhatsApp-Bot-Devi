@@ -1,6 +1,6 @@
 import { join } from 'path'
+import { getRank } from '../libs/Ranks.js'
 import { Quiz } from 'anime-quiz'
-import canvafy from 'canvafy'
 export default class MessageHandler {
     constructor(client) {
         this.client = client
@@ -43,26 +43,27 @@ export default class MessageHandler {
         try {
             await command.exec(M, context)
             await this.client.DB.user.add(`${M.sender.jid}.exp`, command.config.exp)
-            if (user.requiredXpToLevelUp < user.exp) {
+            const [oldRank, newRank] = [user.exp, user.exp + command.config.exp].map(getRank)
+            if (oldRank.name !== newRank.name) {
+                this.client.log.notice(
+                    `(Ranked UP): ${M.sender.username ?? ''} has ranked up from ${oldRank.name} ${oldRank.data.emoji} to ${newRank.name} ${newRank.data.emoji}`
+                )
                 const url =
                     (await this.client.profilePictureUrl(M.sender.jid, 'image').catch(() => null)) ??
                     'https://static.wikia.nocookie.net/v__/images/7/73/Fuseu404notfound.png/revision/latest?cb=20171104190424&path-prefix=vocaloidlyrics'
-                const image = await new canvafy.LevelUp()
-                    .setAvatar(await this.client.util.fetchBuffer(url))
-                    .setBackground(
-                        'image',
-                        'https://marketplace.canva.com/EAFIJGWz8q4/1/0/1600w/canva-red-black-white-anime-podcast-twitch-banner-UWLRt79y-g4.jpg'
-                    )
-                    .setUsername(M.sender.username)
-                    .setBorder('#2EC22E')
-                    .setAvatarBorder('#2EC22E')
-                    .setOverlayOpacity(0.7)
-                    .setLevels(user.level, user.level + 1)
-                    .build()
-                await this.client.DB.user.add(`${M.sender.jid}.level`, 1)
                 return void (await M.replyRaw({
-                    caption: `🎆 ${M.sender.username} has leveled up to ${user.level + 1} from ${user.level}`,
-                    image
+                    text: `🎉 Congratuations! You've Ranked Up!\n\n*${oldRank.name} ${oldRank.data.emoji}* -> *${newRank.name} ${newRank.data.emoji}*`,
+                    contextInfo: {
+                        externalAdReply: {
+                            title: `${M.sender.username ?? ''} 🔼`,
+                            body: `New Rank: ${newRank.name}`,
+                            thumbnail: await this.client.util.fetchBuffer(url),
+                            mediaType: 1,
+                            mediaUrl: '',
+                            sourceUrl: 'https://github.com/Debanjan-San/WhatsApp-Bot-Devi.git',
+                            ShowAdAttribution: true
+                        }
+                    }
                 }))
             }
         } catch (err) {

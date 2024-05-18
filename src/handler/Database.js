@@ -1,6 +1,5 @@
 import { QuickDB } from 'quick.db'
 import { MongoDriver } from 'quickmongo'
-import { getStats } from '../libs/LevelSystem.js'
 export default class DatabaseHandler {
     constructor(config, log) {
         this.config = config
@@ -34,28 +33,32 @@ export default class DatabaseHandler {
     }
 
     getAllUsers = async () => {
-        const data = (await this.user.all()).map((x) => x.id)
-        const users = data.filter((element) => /^\d+@s$/.test(element)).map((element) => `${element}.whatsapp.net`)
+        const users = (await this.user.all()).map((x) =>
+            Object.entries(x.value.whatsapp.net).reduce(
+                (acc, [key, value]) => {
+                    acc[key] = value
+                    return acc
+                },
+                {
+                    jid: `${x.id}.whatsapp.net`
+                }
+            )
+        )
         return users
     }
 
     getUserInfo = async (jid) => {
         const isMod = this.config.mods.includes(jid)
         const exp = (await this.user.get(`${jid}.exp`)) ?? 0
-        const level = (await this.user.get(`${jid}.level`)) ?? 1
         const status = (await this.user.get(`${jid}.status`)) ?? {
             isBan: false,
             reason: ''
         }
-        const { requiredXpToLevelUp, rank } = getStats(level)
         return {
             jid,
             isMod,
             exp,
-            level,
-            status,
-            requiredXpToLevelUp,
-            rank
+            status
         }
     }
 }

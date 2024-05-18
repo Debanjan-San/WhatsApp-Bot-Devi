@@ -1,4 +1,5 @@
 import BaseCommand from '../../libs/BaseCommand.js'
+import { getRank } from '../../libs/Ranks.js'
 
 export default class Command extends BaseCommand {
     constructor(client, handler) {
@@ -20,7 +21,8 @@ export default class Command extends BaseCommand {
         } catch (error) {
             bio = ''
         }
-        const { rank, level, exp, status } = await this.client.DB.getUserInfo(M.sender.jid)
+        const { exp, status } = await this.client.DB.getUserInfo(M.sender.jid)
+        const { name, data } = getRank(exp)
         const url =
             (await this.client.profilePictureUrl(M.sender.jid, 'image').catch(() => null)) ??
             'https://static.wikia.nocookie.net/v__/images/7/73/Fuseu404notfound.png/revision/latest?cb=20171104190424&path-prefix=vocaloidlyrics'
@@ -28,13 +30,11 @@ export default class Command extends BaseCommand {
             caption: `
 🍥 *Username: ${M.sender.username}*
 
-🏅 *Rank: ${rank}*
-
 📑 *Bio: ${bio}*
 
 🌟 *Experience: ${exp}*
 
-🏆 *Level: ${level}*
+🏅 *Rank: ${name} ${data.emoji}*
 
 👑 *Admin: _${M.group?.admins.includes(M.sender.jid) ? 'Yes' : 'Not'}_ of ${M.group?.title}*
 

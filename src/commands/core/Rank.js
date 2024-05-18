@@ -1,5 +1,5 @@
 import BaseCommand from '../../libs/BaseCommand.js'
-import canvafy from 'canvafy'
+import { getRank, ranks } from '../../libs/Ranks.js'
 
 export default class Command extends BaseCommand {
     constructor(client, handler) {
@@ -14,36 +14,42 @@ export default class Command extends BaseCommand {
     }
 
     exec = async (M) => {
-        const { rank, level, exp, requiredXpToLevelUp } = await this.client.DB.getUserInfo(M.sender.jid)
+        const { exp } = await this.client.DB.getUserInfo(M.sender.jid)
         const url =
             (await this.client.profilePictureUrl(M.sender.jid, 'image').catch(() => null)) ??
             'https://static.wikia.nocookie.net/v__/images/7/73/Fuseu404notfound.png/revision/latest?cb=20171104190424&path-prefix=vocaloidlyrics'
 
-        const image = await new canvafy.Rank()
-            .setAvatar(await this.client.util.fetchBuffer(url))
-            .setBackground(
-                'image',
-                'https://marketplace.canva.com/EAFIJOrGLJ8/1/0/1600w/canva-white-lime-green-slate-grey-sports-and-racing-sports-twitch-banner-yggpFT_kyBo.jpg'
-            )
-            .setUsername(M.sender.username)
-            .setBorder('#2EC22E')
-            .setStatus('online')
-            .setLevel(level)
-            .setCurrentXp(exp)
-            .setRequiredXp(requiredXpToLevelUp)
-            .build()
+        const { name, data } = getRank(exp)
+        const nextRank = (() => {
+            const keys = Object.keys(ranks)
+            const i =
+                keys.find((x) => {
+                    return ranks[x].exp > exp
+                }) ?? 'Recruit'
+            return getRank(ranks[i].exp)
+        })()
 
         return void (await M.replyRaw({
-            caption: `
+            text: `
 🏷️  *Username: ${M.sender.username}*
 
-🏅 *Rank: ${rank}*
+🪄 *Experience: ${exp}*
 
-🪄  *Experience: ${exp}*
+🏆 *Rank: ${name} ${data.emoji}*
 
-🏆 *Level: ${level}*
+🍥 *Next Rank: ${nextRank.name} ${nextRank.data.emoji} (${nextRank.data.exp - exp} exp required)*
     `,
-            image
+            contextInfo: {
+                externalAdReply: {
+                    title: `${M.sender.username ?? ''}'s Rank`,
+                    body: ``,
+                    thumbnail: await this.client.util.fetchBuffer(url),
+                    mediaType: 1,
+                    mediaUrl: '',
+                    sourceUrl: 'https://github.com/Debanjan-San/WhatsApp-Bot-Devi.git',
+                    ShowAdAttribution: true
+                }
+            }
         }))
     }
 }

@@ -1,10 +1,10 @@
 import { makeCacheableSignalKeyStore, fetchLatestBaileysVersion, useMongoDBAuthState } from '@iamrony777/baileys'
-import { createLogger } from './utils/Logger.js'
-import DatabaseHandler from './handler/Database.js'
-import getConfig from './getConfig.js'
-import { MongoClient } from 'mongodb'
 import Devi from './libs/Devi.js'
 import P from 'pino'
+import { createLogger } from './utils/Logger.js'
+import getConfig from './getConfig.js'
+import { MongoClient } from 'mongodb'
+import DatabaseHandler from './handler/Database.js'
 ;(async () => {
     const log = createLogger()
     const config = getConfig()

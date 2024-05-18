@@ -1,4 +1,5 @@
 import BaseCommand from '../../libs/BaseCommand.js'
+import { getRank } from '../../libs/Ranks.js'
 
 export default class Command extends BaseCommand {
     constructor(client, handler) {
@@ -16,11 +17,12 @@ export default class Command extends BaseCommand {
 
     exec = async (M, { flags }) => {
         const keys = Object.keys(flags)
-        const totalParticipants = (await this.client.DB.user.all()).map((jid) => {
+        const totalParticipants = (await this.client.DB.getAllUsers()).map((user) => {
+            const { name, data } = getRank(user.exp ?? 0)
             return {
-                jid: jid.id + '.whatsapp.net',
-                exp: jid.value.whatsapp.net.exp ?? 0,
-                level: jid.value.whatsapp.net.level ?? 0
+                jid: user.jid,
+                exp: user.exp ?? 0,
+                rank: `${name} ${data.emoji}`
             }
         })
         const participants =
@@ -37,7 +39,7 @@ export default class Command extends BaseCommand {
                 jids.push(participant.jid)
                 return `${this.emojis[i]} *@${participant.jid.split('@')[0]}*\n🌟 *Exp: ${
                     participant.exp
-                }*\n🏅 *Level: ${participant.level}*`
+                }*\n🍥 *Rank: ${participant.rank}*`
             })
             .join('\n\n')
         return void (await M.reply(text, 'text', undefined, undefined, jids))
