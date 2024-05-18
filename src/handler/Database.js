@@ -10,26 +10,35 @@ export default class DatabaseHandler {
             process.exit(1)
         }
         this.driver = new MongoDriver(url)
-        this.driver
-            .connect()
-            .then(() => {
-                this.log.info('Database connection opened!')
-                this.log.info('Database connected!')
-                const database = new QuickDB({ driver: this.driver })
-                Object.assign(
-                    this,
-                    {
-                        command: database.table('command'),
-                        group: database.table('guild'),
-                        user: database.table('user')
-                    },
-                    database
-                )
-            })
-            .catch((err) => {
-                this.log.error(err)
-                process.exit(1)
-            })
+    }
+
+    connect = () => {
+        return new Promise((resolve) => {
+            this.driver
+                .connect()
+                .then(() => {
+                    this.log.info('Database connection opened!')
+                    this.log.info('Database connected!')
+                    const database = new QuickDB({ driver: this.driver })
+
+                    Object.assign(
+                        this,
+                        {
+                            command: database.table('command'),
+                            group: database.table('guild'),
+                            user: database.table('user'),
+                            session: database.table('session')
+                        },
+                        database
+                    )
+
+                    resolve({ connected: true })
+                })
+                .catch((err) => {
+                    this.log.error(err)
+                    resolve({ connected: false })
+                })
+        })
     }
 
     getAllUsers = async () => {

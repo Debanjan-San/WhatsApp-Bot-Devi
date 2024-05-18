@@ -1,9 +1,9 @@
-import { makeCacheableSignalKeyStore, fetchLatestBaileysVersion, useMongoDBAuthState } from '@iamrony777/baileys'
+import { fetchLatestBaileysVersion } from '@whiskeysockets/baileys'
 import Devi from './libs/Devi.js'
 import P from 'pino'
 import { createLogger } from './utils/Logger.js'
 import getConfig from './getConfig.js'
-import { MongoClient } from 'mongodb'
+import AuthenticationFromDatabase from './libs/Authentication.js'
 import DatabaseHandler from './handler/Database.js'
 ;(async () => {
     const log = createLogger()
@@ -12,21 +12,20 @@ import DatabaseHandler from './handler/Database.js'
         log.error('No mongo url provided')
         return process.exit(1)
     }
-    const mongo = new MongoClient(config.mongo, {
-        socketTimeoutMS: 1_00_000,
-        connectTimeoutMS: 1_00_000,
-        waitQueueTimeoutMS: 1_00_000
+    const database = new DatabaseHandler(config, log)
+    database.connect().then(async () => {
+        const { useDatabaseAuth } = new AuthenticationFromDatabase(config.session, database)
+        const authSession = await useDatabaseAuth()
+        new Devi(config, authSession, log, database, {
+            version: (await fetchLatestBaileysVersion()).version,
+            auth: authSession.state,
+            logger: P({ level: 'silent' }),
+            printQRInTerminal: true,
+            getMessage: async () => {
+                return {
+                    conversation: ''
+                }
+            }
+        }).connect()
     })
-    const databaseHandler = new DatabaseHandler(config, log)
-    const collection = mongo.db(config.session).collection('auth')
-    const authSession = await useMongoDBAuthState(collection)
-    new Devi(config, mongo, authSession, log, databaseHandler, {
-        version: (await fetchLatestBaileysVersion()).version,
-        auth: {
-            creds: authSession.state.creds,
-            keys: makeCacheableSignalKeyStore(authSession.state.keys)
-        },
-        logger: P({ level: 'silent' }),
-        printQRInTerminal: true
-    }).connect()
 })()

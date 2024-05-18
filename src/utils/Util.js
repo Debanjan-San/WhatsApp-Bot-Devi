@@ -7,7 +7,7 @@ import { join } from 'path'
 import { load } from 'cheerio'
 import FormData from 'form-data'
 import DefineMesssage from '../decorators/DefineMesssage.js'
-import { jidDecode, downloadContentFromMessage } from '@iamrony777/baileys'
+import { jidDecode, downloadContentFromMessage } from '@whiskeysockets/baileys'
 import axios from 'axios'
 export default class Utils {
     exec = promisify(exec)
