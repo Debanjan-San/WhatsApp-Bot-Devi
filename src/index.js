@@ -1,6 +1,6 @@
+import P from 'pino'
 import { fetchLatestBaileysVersion } from '@whiskeysockets/baileys'
 import Devi from './libs/Devi.js'
-import P from 'pino'
 import { createLogger } from './utils/Logger.js'
 import getConfig from './getConfig.js'
 import AuthenticationFromDatabase from './libs/Authentication.js'

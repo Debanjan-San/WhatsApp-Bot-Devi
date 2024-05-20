@@ -33,14 +33,8 @@ export default class Command extends BaseCommand {
                 })
             )
             const level = this.level()
-            let text = ''
-            if (level >= 0 && level < 10) text = 'Awful'
-            else if (level >= 10 && level < 25) text = 'Very Bad'
-            else if (level >= 25 && level < 40) text = 'Poor'
-            else if (level >= 40 && level < 55) text = 'Average'
-            else if (level >= 55 && level < 75) text = 'Good'
-            else if (level >= 75 && level < 90) text = 'Great'
-            else if (level >= 90) text = 'Amazing'
+            const ratings = ['Awful', 'Very Bad', 'Poor', 'Average', 'Good', 'Great', 'Amazing']
+            const index = Math.floor(level / 15)
 
             const image = await new canvafy.Ship()
                 .setAvatars(images[0].image, images[1].image)
@@ -54,7 +48,7 @@ export default class Command extends BaseCommand {
                 mentions: images.map((i) => i.jid),
                 caption: `\`\`\`🔺Compatibility Meter🔺\`\`\`
 💖 *${images.map((user) => `@${user.jid.split('@')[0]}`).join(' X ')}* 💖
-*🔻 ${level} ${level < 50 ? '💔' : '💞'} ${text}* 🔻`
+*🔻 ${level} ${level < 50 ? '💔' : '💞'} ${ratings[index]}* 🔻`
             }))
         } catch (e) {
             console.error(e)
