@@ -32,10 +32,8 @@ export default class Command extends BaseCommand {
                     }
                 })
             )
-            const level = this.level()
+            const level = Math.floor(Math.random() * 100) + 1
             const ratings = ['Awful', 'Very Bad', 'Poor', 'Average', 'Good', 'Great', 'Amazing']
-            const index = Math.floor(level / 15)
-
             const image = await new canvafy.Ship()
                 .setAvatars(images[0].image, images[1].image)
                 .setBackground('image', 'https://i.pinimg.com/originals/8b/22/7e/8b227ee6d17a97b4f867b506bbd99c81.jpg')
@@ -48,12 +46,10 @@ export default class Command extends BaseCommand {
                 mentions: images.map((i) => i.jid),
                 caption: `\`\`\`🔺Compatibility Meter🔺\`\`\`
 💖 *${images.map((user) => `@${user.jid.split('@')[0]}`).join(' X ')}* 💖
-*🔻 ${level} ${level < 50 ? '💔' : '💞'} ${ratings[index]}* 🔻`
+*🔻 ${level} ${level < 50 ? '💔' : '💞'} ${ratings[Math.floor(level / 15)]}* 🔻`
             }))
         } catch (e) {
             console.error(e)
         }
     }
-
-    level = () => Math.floor(Math.random() * 100) + 1
 }
