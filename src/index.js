@@ -13,19 +13,18 @@ import DatabaseHandler from './handler/Database.js'
         return process.exit(1)
     }
     const database = new DatabaseHandler(config, log)
-    database.connect().then(async () => {
-        const { useDatabaseAuth } = new AuthenticationFromDatabase(config.session, database)
-        const authSession = await useDatabaseAuth()
-        new Devi(config, authSession, log, database, {
-            version: (await fetchLatestBaileysVersion()).version,
-            auth: authSession.state,
-            logger: P({ level: 'silent' }),
-            printQRInTerminal: true,
-            getMessage: async () => {
-                return {
-                    conversation: ''
-                }
+    await database.connect()
+    const { useDatabaseAuth } = new AuthenticationFromDatabase(config.session, database)
+    const authSession = await useDatabaseAuth()
+    new Devi(config, authSession, log, database, {
+        version: (await fetchLatestBaileysVersion()).version,
+        auth: authSession.state,
+        logger: P({ level: 'fatal' }),
+        printQRInTerminal: true,
+        getMessage: async () => {
+            return {
+                conversation: ''
             }
-        }).connect()
-    })
+        }
+    }).connect()
 })()

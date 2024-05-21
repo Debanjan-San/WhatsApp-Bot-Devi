@@ -74,7 +74,9 @@ export default class Utils {
                 file ? `https://ezgif.com/webp-to-mp4/${file}` : 'https://ezgif.com/webp-to-mp4',
                 form,
                 {
-                    headers: { 'Content-Type': `multipart/form-data; boundary=${form._boundary}` }
+                    headers: {
+                        'Content-Type': `multipart/form-data; boundary=${form._boundary}`
+                    }
                 }
             )
             return load(data)

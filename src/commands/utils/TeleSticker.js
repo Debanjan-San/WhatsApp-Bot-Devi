@@ -6,7 +6,7 @@ export default class Command extends BaseCommand {
         super(client, handler, {
             command: 'telesticker',
             category: 'utils',
-            aliases: ['tl'],
+            aliases: ['tls'],
             description: {
                 content: 'Convert telegram stickers into whatsapp Stickers',
                 usage: '[link]'
