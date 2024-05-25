@@ -1,0 +1,63 @@
+{
+   "name":"WhatsApp-Bot-Devi",
+   "description":"Modular WhatsApp Bot",
+   "keywords":[
+      "bot",
+      "whatsapp",
+      "stickers",
+      "whatsapp-stickers",
+      "whatsapp-bot",
+      "whatsapp-sticker-bot"
+   ],
+   "website":"https://github.com/Debanjan-San/WhatsApp-Bot-Devi#readme",
+   "repository":"https://github.com/Debanjan-San/WhatsApp-Bot-Devi.git",
+   "logo":"https://i.ibb.co/P9Q7q33/fc821b4e243f6b5ac15255d8eeff087f.jpg",
+   "success_url":"/",
+   "env":{
+      "NAME":{
+         "description":"Name of your bot",
+         "required":true
+      },
+      "PREFIX":{
+         "description":"Prefix of your bot",
+         "required":true
+      },
+      "MODS":{
+         "description":"The phone numbers of the users who you want to be admin for the bot (should be in international format without + and multiple numbers must be separated by a comma \",\")",
+         "required":true
+      },
+      "MONGO":{
+         "description":"A secret String for Mongodb Connection.(Required)",
+         "required":true
+      },
+      "SESSION":{
+         "description":"A string for the session to be classified and to get access to the server endpoints",
+         "required":true
+      },
+      "BRAINSHOP":{
+         "description":"BrainShop API Brain url"
+      },
+      "IMGBB":{
+         "description":"A key used for image uploading. You can get the api from https://imgbb.com ",
+         "required":true
+      },
+      "PORT":{
+         "description":"A port for your app",
+         "required":true
+      }
+   },
+   "buildpacks":[
+      {
+         "url":"heroku/nodejs"
+      },
+      {
+         "url":"https://github.com/PrajjwalDatir/heroku-buildpack-imagemagick.git"
+      },
+      {
+         "url":"https://github.com/clhuang/heroku-buildpack-webp-binaries.git"
+      },
+      {
+         "url":"https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+      }
+   ]
+}
