@@ -1,4 +1,5 @@
 import P from 'pino'
+import { fetchLatestBaileysVersion } from '@whiskeysockets/baileys'
 import Devi from './libs/Devi.js'
 import { createLogger } from './utils/Logger.js'
 import getConfig from './getConfig.js'
@@ -16,7 +17,7 @@ import DatabaseHandler from './handler/Database.js'
     const { useDatabaseAuth } = new AuthenticationFromDatabase(config.session, database)
     const authSession = await useDatabaseAuth()
     new Devi(config, authSession, log, database, {
-        version:  [2, 2413, 1],
+        version: (await fetchLatestBaileysVersion()).version,
         auth: authSession.state,
         syncFullHistory: false,
         logger: P({ level: 'fatal' }),
