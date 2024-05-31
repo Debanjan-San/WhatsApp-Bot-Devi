@@ -10,6 +10,7 @@ export default class Command extends BaseCommand {
             description: {
                 content: "Displays the bot's info"
             },
+            dm: true,
             exp: 1
         })
     }

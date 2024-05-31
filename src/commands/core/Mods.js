@@ -9,6 +9,7 @@ export default class Command extends BaseCommand {
             description: {
                 content: "View bot's Moderators"
             },
+            dm: true,
             exp: 4
         })
     }
