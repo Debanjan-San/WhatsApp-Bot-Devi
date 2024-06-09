@@ -32,7 +32,7 @@ export default class Command extends BaseCommand {
         if (M.quoted?.sender) M.mentioned.push(M.quoted.sender)
         M.mentioned = [...new Set(M.mentioned)]
         if (!M.mentioned.length) M.mentioned.push(M.sender.jid)
-        if (cmd === 'cu') {
+        if (cmd === 'cu' || cmd == 'checkuser') {
             const checkList = `🎃 *Available Checks:*\n\n- ${options
                 .map((check) => this.client.util.capitalize(check))
                 .join('\n- ')}\n🔗  *Usage:* ${this.client.config.prefix}(check) [tag/quote user]\nExample: ${
