@@ -41,23 +41,9 @@ export default class Command extends BaseCommand {
                     )
                     .join('\n')}\n\n`
 
-            return void (await M.replyRaw({
-                image: {
-                    url: 'https://i.pinimg.com/originals/82/83/68/8283687daf61e2464f30537d2cbca205.jpg'
-                },
-                caption: `${text}*📇 Notes:*\n*➪ Use ${this.client.config.prefix}help <command name> from help the list to see its description and usage*\n*➪ Eg: ${this.client.config.prefix}help profile*\n*➪ <> means required and [ ] means optional, don't include <> or [ ] when using command.*`,
-                contextInfo: {
-                    externalAdReply: {
-                        title: `${this.client.util.capitalize(this.client.config.name)}'s Commands`,
-                        body: '',
-                        thumbnail: await this.client.util.fetchBuffer('https://i.imgur.com/22WppSh.jpg'),
-                        mediaType: 1,
-                        mediaUrl: '',
-                        sourceUrl: '',
-                        ShowAdAttribution: true
-                    }
-                }
-            }))
+            return void (await M.reply(
+                `${text}*📇 Notes:*\n*➪ Use ${this.client.config.prefix}help <command name> from help the list to see its description and usage*\n*➪ Eg: ${this.client.config.prefix}help profile*\n*➪ <> means required and [ ] means optional, don't include <> or [ ] when using command.*`
+            ))
         }
         const key = parsedArgs.text.toLowerCase()
         const command = this.handler.commands.get(key) || this.handler.aliases.get(key)

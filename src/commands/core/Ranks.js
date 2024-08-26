@@ -21,12 +21,7 @@ export default class Command extends BaseCommand {
 🌟 *Ranks are a way to display a user's progress in the bots Ecosystem*
 💚 *Ranking is based on the amount of Experience points a user has earned*
 
-${keys
-    .map(
-        (x) =>
-            `${ranks[x].emoji} *${x}*\n*Required Exp: ${ranks[x].exp}*\n`
-    )
-    .join('\n')}
+${keys.map((x) => `${ranks[x].emoji} *${x}*\n*Required Exp: ${ranks[x].exp}*\n`).join('\n')}
         `
         return void (await M.reply(text))
     }
