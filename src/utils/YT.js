@@ -2,7 +2,7 @@ import { createWriteStream, promises } from 'fs'
 const { unlink, readFile } = promises
 import { tmpdir } from 'os'
 import Utils from './Util.js'
-import ytdl from 'ytdl-core'
+import ytdl from '@distube/ytdl-core'
 export default class YT {
     constructor(url, type) {
         this.url = url

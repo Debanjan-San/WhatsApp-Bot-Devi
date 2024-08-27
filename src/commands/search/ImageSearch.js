@@ -22,14 +22,6 @@ export default class Command extends BaseCommand {
             nsfw: false
         }
         if (!nsfw) safe = true
-        const options = {
-            page: 0,
-            safe,
-            parse_ads: false,
-            additional_params: {
-                hl: 'en'
-            }
-        }
         const results = await google.image(text.trim(), { safe }).catch((err) => {
             return void M.reply('❌ Could not find the searched term')
         })

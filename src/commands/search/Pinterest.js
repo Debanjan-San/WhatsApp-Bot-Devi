@@ -19,7 +19,7 @@ export default class Command extends BaseCommand {
         if (!text) return void M.reply('❌ Please provide a word')
         const data = await this.client.util.fetch(`https://weeb-api.vercel.app/pinterest?query=${text}`)
         if (!data.length) return void (await M.reply('❌ Not Found'))
-        const { imageUrl } = this.client.util.getRandomItem(data)
-        return void (await M.reply(await this.client.util.fetchBuffer(imageUrl), 'image'))
+        const { original } = this.client.util.getRandomItem(data)
+        return void (await M.reply(await this.client.util.fetchBuffer(original), 'image'))
     }
 }
