@@ -11,9 +11,9 @@ export default class DefineMesssage {
 
     isAdminMessage = false
 
-    numbers = []
+    numbers = new Array()
 
-    #M = {}
+    #M = new Object()
 
     constructor(M, client) {
         this.client = client
