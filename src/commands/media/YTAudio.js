@@ -29,7 +29,7 @@ export default class Command extends BaseCommand {
         if (parseInt(videoDetails.lengthSeconds) > 600) return void (await M.reply('❌ Audio is too long'))
         try {
             return void (await M.replyRaw({
-                audio: await video.download('high'),
+                audio: await video.getBuffer(),
                 mimetype: 'audio/mp4',
                 fileName: videoDetails.title
             }))

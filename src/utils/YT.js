@@ -1,56 +1,94 @@
 import { createWriteStream, promises } from 'fs'
-const { unlink, readFile } = promises
+import { Innertube, UniversalCache, Utils as YTUtils } from 'youtubei.js'
 import { tmpdir } from 'os'
 import Utils from './Util.js'
+const { unlink, readFile } = promises
 import ytdl from '@distube/ytdl-core'
 export default class YT {
     constructor(url, type) {
         this.url = url
-        this.type = type
+        this.type = type // 'audio' or 'video'
+        this.id = this.parseId()
     }
 
     validateURL = () => ytdl.validateURL(this.url)
 
     getInfo = async () => await ytdl.getInfo(this.url)
 
-    download = async (quality = 'medium') => {
-        if (this.type === 'audio' || quality === 'medium') {
-            let filename = `${tmpdir()}/${Math.random().toString(36)}.${this.type === 'audio' ? 'mp3' : 'mp4'}`
-            const stream = createWriteStream(filename)
-            ytdl(this.url, {
-                quality: this.type === 'audio' ? 'highestaudio' : 'highest'
-            }).pipe(stream)
-            filename = await new Promise((resolve, reject) => {
-                stream.on('finish', () => resolve(filename))
-                stream.on('error', (error) => reject(error && console.log(error)))
-            })
+    getBuffer = async () => {
+        try {
+            const YT = await Innertube.create({ cache: new UniversalCache(false), generate_session_locally: true })
+            if (this.type == 'audio') {
+                const filename = `${tmpdir()}/${Math.random().toString(36)}.mp3`
+                const stream = createWriteStream(filename)
+                for await (const chunk of YTUtils.streamToIterable(
+                    await YT.download(this.id, {
+                        type: 'audio',
+                        quality: 'best',
+                        format: 'mp4',
+                        client: 'YTSTUDIO_ANDROID'
+                    })
+                )) {
+                    stream.write(chunk)
+                }
+
+                stream.end()
+                const buffer = await readFile(filename)
+                await unlink(filename)
+                return buffer
+            }
+
+            const audioFilename = `${tmpdir()}/${Math.random().toString(36)}.mp3`
+            const videoFilename = `${tmpdir()}/${Math.random().toString(36)}.mp4`
+            const filename = `${tmpdir()}/${Math.random().toString(36)}.mp4`
+            const audioStream = createWriteStream(audioFilename)
+            const videoStream = createWriteStream(videoFilename)
+
+            for await (const chunk of YTUtils.streamToIterable(
+                await YT.download(this.id, {
+                    type: 'audio',
+                    quality: 'best',
+                    format: 'mp4',
+                    client: 'YTSTUDIO_ANDROID'
+                })
+            )) {
+                audioStream.write(chunk)
+            }
+            audioStream.end()
+
+            for await (const chunk of YTUtils.streamToIterable(
+                await YT.download(this.id, {
+                    type: 'video',
+                    quality: 'best',
+                    format: 'mp4',
+                    client: 'YTSTUDIO_ANDROID'
+                })
+            )) {
+                videoStream.write(chunk)
+            }
+            videoStream.end()
+
+            await this.utils.exec(`ffmpeg -i ${videoFilename} -i ${audioFilename} -c:v copy -c:a aac ${filename}`)
             const buffer = await readFile(filename)
-            await unlink(filename)
+            Promise.all([unlink(videoFilename), unlink(audioFilename), unlink(filename)])
             return buffer
+        } catch (error) {
+            console.error(error)
         }
-        let audioFilename = `${tmpdir()}/${Math.random().toString(36)}.mp3`
-        let videoFilename = `${tmpdir()}/${Math.random().toString(36)}.mp4`
-        const filename = `${tmpdir()}/${Math.random().toString(36)}.mp4`
-        const audioStream = createWriteStream(audioFilename)
-        ytdl(this.url, {
-            quality: 'highestaudio'
-        }).pipe(audioStream)
-        audioFilename = await new Promise((resolve, reject) => {
-            audioStream.on('finish', () => resolve(audioFilename))
-            audioStream.on('error', (error) => reject(error && console.log(error)))
-        })
-        const stream = createWriteStream(videoFilename)
-        ytdl(this.url, {
-            quality: quality === 'high' ? 'highestvideo' : 'lowestvideo'
-        }).pipe(stream)
-        videoFilename = await new Promise((resolve, reject) => {
-            stream.on('finish', () => resolve(videoFilename))
-            stream.on('error', (error) => reject(error && console.log(error)))
-        })
-        await this.utils.exec(`ffmpeg -i ${videoFilename} -i ${audioFilename} -c:v copy -c:a aac ${filename}`)
-        const buffer = await readFile(filename)
-        Promise.all([unlink(videoFilename), unlink(audioFilename), unlink(filename)])
-        return buffer
+    }
+
+    get thumbnail() {
+        return `https://i.ytimg.com/vi/${this.id}/hqdefault.jpg`
+    }
+
+    getThumbnail = async () => {
+        return await this.utils.fetchBuffer(this.thumbnail)
+    }
+
+    parseId = () => {
+        const split = this.url.split('/')
+        if (this.url.includes('youtu.be')) return split[split.length - 1]
+        return this.url.split('=')[1]
     }
 
     utils = new Utils()
