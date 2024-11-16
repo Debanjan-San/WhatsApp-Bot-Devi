@@ -8,24 +8,29 @@ import DatabaseHandler from './handler/Database.js'
 ;(async () => {
     const log = createLogger()
     const config = getConfig()
-    if (!config.mongo) {
-        log.error('No mongo url provided')
-        return process.exit(1)
-    }
-    const database = new DatabaseHandler(config, log)
-    await database.connect()
-    const { useDatabaseAuth } = new AuthenticationFromDatabase(config.session, database)
-    const authSession = await useDatabaseAuth()
-    new Devi(config, authSession, log, database, {
-        version: (await fetchLatestBaileysVersion()).version,
-        auth: authSession.state,
-        syncFullHistory: false,
-        logger: P({ level: 'fatal' }),
-        printQRInTerminal: true,
-        getMessage: async () => {
-            return {
-                conversation: ''
-            }
+    try {
+        if (!config.mongo) {
+            log.error('No mongo url provided')
+            return process.exit(1)
         }
-    }).connect()
+        const database = new DatabaseHandler(config, log)
+        await database.connect()
+        const { useDatabaseAuth } = new AuthenticationFromDatabase(config.session, database)
+        const authSession = await useDatabaseAuth()
+        new Devi(config, authSession, log, database, {
+            version: (await fetchLatestBaileysVersion()).version,
+            auth: authSession.state,
+            syncFullHistory: false,
+            logger: P({ level: 'fatal' }),
+            printQRInTerminal: true,
+            getMessage: async () => {
+                return {
+                    conversation: ''
+                }
+            }
+        }).connect()
+    } catch (err) {
+        log.error(err.message)
+        process.exit(1)
+    }
 })()
